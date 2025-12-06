@@ -1,8 +1,8 @@
 {
   "name": "respawn-squirrel-extension",
   "displayName": "Squirrel (Respawn)",
-  "description": "Full language support for Respawn Entertainment games (Apex Legends, Titanfall). Includes Squirrel scripts (.nut, .gnut), weapon/item configs (.txt), UI files (.res, .menu), and RSON data files.",
-  "version": "2.1.0",
+  "description": "Full language support for Respawn Entertainment games (Apex Legends, Titanfall). Includes IntelliSense, syntax highlighting, and snippets for Squirrel scripts and config files.",
+  "version": "2.6.0",
   "publisher": "zee",
   "icon": "acorn.png",
   "license": "MIT",
@@ -25,11 +25,11 @@
     "r5reloaded",
     "vscript",
     "source engine",
-    "keyvalues",
-    "vdf",
-    "weapon",
-    "res",
-    "menu"
+    "intellisense"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:squirrel"
   ],
   "contributes": {
     "languages": [
@@ -118,7 +118,12 @@
         "editor.tabSize": 4,
         "editor.insertSpaces": false,
         "editor.detectIndentation": true,
-        "editor.bracketPairColorization.enabled": true
+        "editor.bracketPairColorization.enabled": true,
+        "editor.quickSuggestions": {
+          "other": true,
+          "comments": false,
+          "strings": false
+        }
       },
       "[rson]": {
         "editor.tabSize": 4,
@@ -131,12 +136,24 @@
       }
     }
   },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/vscode": "^1.60.0",
+    "typescript": "^5.0.0",
+    "@vscode/vsce": "^2.22.0"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/AyeZeeBB/vscode-squirrel-re.git"
+    "url": "https://github.com/r-ex/vscode-squirrel-re.git"
   },
   "bugs": {
-    "url": "https://github.com/AyeZeeBB/vscode-squirrel-re/issues"
+    "url": "https://github.com/r-ex/vscode-squirrel-re/issues"
   },
-  "homepage": "https://github.com/AyeZeeBB/vscode-squirrel-re#readme"
+  "homepage": "https://github.com/r-ex/vscode-squirrel-re#readme"
 }
