@@ -1,9 +1,9 @@
 # Squirrel (Respawn) - VS Code Extension
 
-![Version](https://img.shields.io/badge/version-2.1.0-blue)
+![Version](https://img.shields.io/badge/version-2.6.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-Full-featured language support for **Respawn Entertainment** games including Apex Legends and Titanfall. This extension provides comprehensive syntax highlighting, snippets, and language configuration for all script and config file types.
+Full-featured language support for **Respawn Entertainment** games including Apex Legends and Titanfall. This extension provides comprehensive IntelliSense, syntax highlighting, snippets, and language configuration for all script and config file types.
 
 ![Syntax Highlighting Preview](acorn.png)
 
@@ -20,6 +20,72 @@ Full-featured language support for **Respawn Entertainment** games including Ape
 | `.txt` (aisettings/) | KeyValues | AI settings files |
 
 ## Features
+
+### 🧠 IntelliSense
+
+Full autocomplete support for Respawn's Squirrel dialect:
+
+| Feature | Description |
+|---------|-------------|
+| **Local Struct Variables** | `struct { ... } file` or any variable name - type `file.` to see members |
+| **Global Structs** | `global struct MyStruct { }` - type completion and member access |
+| **Enums** | Local and global enums - type `EnumName.` to see values |
+| **Global Functions** | Parsed from all open `.nut`/`.gnut` files |
+| **Global Constants** | `global const int`, `global const table<>`, etc. |
+| **Built-in Functions** | 50+ common Respawn functions with signatures |
+| **Keywords & Types** | All Squirrel keywords, types, and modifiers |
+
+#### Local Struct Completion
+
+```squirrel
+struct {
+    bool isActive
+    int count
+    array<entity> targets
+} file
+
+// Type "file." to see: isActive, count, targets
+```
+
+Works with any variable name, not just `file`:
+
+```squirrel
+struct {
+    array<PakHandle> pakHandles
+    table<string, int> pakLoadStatuses
+} s_pakData
+
+// Type "s_pakData." to see: pakHandles, pakLoadStatuses
+```
+
+#### Global Struct & Enum Completion
+
+```squirrel
+global struct PlayerData {
+    entity player
+    int score
+    vector spawnPos
+}
+
+global enum eGameState {
+    LOBBY,
+    PLAYING,
+    GAME_OVER
+}
+
+// Type "PlayerData" for struct type completion
+// Type "eGameState." to see: LOBBY, PLAYING, GAME_OVER
+```
+
+#### Global Function & Constant Completion
+
+```squirrel
+global function MyGlobalFunction
+global const bool FEATURE_ENABLED = true
+global const table<string, int> LOOKUP_TABLE = { ... }
+
+// All globals from open files appear in autocomplete
+```
 
 ### 🎨 Squirrel Syntax Highlighting
 
@@ -71,7 +137,7 @@ Full-featured language support for **Respawn Entertainment** games including Ape
 ### From VSIX
 
 1. Download the latest `.vsix` file from releases
-2. In VS Code, press `Ctrl+Shift+P`
+2. In VS Code/Cursor, press `Ctrl+Shift+P`
 3. Run `Extensions: Install from VSIX...`
 4. Select the downloaded file
 
@@ -82,18 +148,36 @@ Full-featured language support for **Respawn Entertainment** games including Ape
    - macOS/Linux: `~/.vscode/extensions/`
 2. Restart VS Code
 
-## Usage Examples
+## Usage Tips
 
-### Squirrel Script
+### Maximize IntelliSense
+
+For best IntelliSense experience, **open multiple script files** in your workspace. The extension scans all open `.nut` and `.gnut` files for:
+- Global function declarations
+- Global struct definitions
+- Global enum definitions
+- Global constants and variables
+
+### Usage Examples
+
+#### Squirrel Script
 
 ```squirrel
 #if SERVER
+global function SpawnWeaponRack
+
+struct {
+    array<entity> spawnedRacks
+    int maxRacks
+} file
+
 void function SpawnWeaponRack(vector origin, vector angles)
 {
     entity rack = CreateEntity("prop_dynamic")
     rack.SetOrigin(origin)
     rack.SetAngles(angles)
     
+    file.spawnedRacks.append(rack)
     thread MonitorRack(rack)
 }
 
@@ -109,7 +193,7 @@ void function MonitorRack(entity rack)
 #endif
 ```
 
-### Weapon Config (.txt)
+#### Weapon Config (.txt)
 
 ```keyvalues
 #base "_base_assault_rifle.txt"
@@ -137,7 +221,7 @@ WeaponData
 }
 ```
 
-### UI Panel (.res)
+#### UI Panel (.res)
 
 ```keyvalues
 "scripts/resource/ui/menus/panels/my_panel.res"
@@ -179,7 +263,12 @@ The extension sets sensible defaults:
   "[squirrel]": {
     "editor.tabSize": 4,
     "editor.insertSpaces": false,
-    "editor.bracketPairColorization.enabled": true
+    "editor.bracketPairColorization.enabled": true,
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": false
+    }
   },
   "[respawn-keyvalues]": {
     "editor.tabSize": 4,
@@ -196,6 +285,29 @@ The extension automatically detects KeyValues format for:
 - `.txt` files in `weapons/`, `aisettings/`, `turrets/`, `damage/` folders
 
 For other `.txt` files, you can manually set the language mode to "Respawn KeyValues".
+
+## Changelog
+
+### v2.6.0
+- Added local struct variable completion for any variable name (not just `file`)
+- Added global constant and variable completion (`global const int`, `global table<>`, etc.)
+- Improved struct member parsing for complex types with `#if`/`#endif` blocks
+
+### v2.4.0
+- Added global function completion from all open Squirrel files
+- Global functions show return type, parameters, and source file
+
+### v2.3.0
+- Added global struct completion with member preview
+- Added enum completion (local and global)
+- Added variable type tracking for struct member completion
+- Improved parsing for complex generic types (`table<string, functionref(...)>`)
+
+### v2.0.0
+- Complete rewrite of Squirrel syntax highlighting
+- Added RSON language support
+- Added KeyValues language support (.res, .menu, weapon .txt files)
+- Added 60+ Squirrel snippets and 30+ KeyValues snippets
 
 ## Contributing
 
