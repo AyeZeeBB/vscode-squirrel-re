@@ -68,8 +68,8 @@
         { "include": "#variable" },
         { "include": "#modifiers" },
         { "include": "#for-loop" },
-        { "include": "#keywords" },
         { "include": "#typed-variables" },
+        { "include": "#keywords" },
         { "include": "#method-call" },
         { "include": "#punctuation-braces" },
         { "include": "#operators" },
@@ -89,12 +89,16 @@
 
     "global-function-forward": {
       "comment": "Forward declarations like 'global function FunctionName' without body",
-      "match": "^\\s*(global)\\s+(function)\\s+([_A-Za-z][\\w]*)\\s*$",
-      "captures": {
+      "begin": "^\\s*(global)\\s+(function)\\s+([_A-Za-z][\\w]*)",
+      "beginCaptures": {
         "1": { "name": "storage.modifier.global.squirrel" },
         "2": { "name": "storage.type.function.squirrel" },
         "3": { "name": "entity.name.function.squirrel" }
-      }
+      },
+      "end": "$",
+      "patterns": [
+        { "include": "#comments" }
+      ]
     },
 
     "global-const-declaration": {
@@ -102,34 +106,75 @@
       "patterns": [
         {
           "comment": "global const TYPE NAME = value",
-          "match": "^\\s*(global)\\s+(const)\\s+(int|float|bool|string|asset|vector)\\s+([_A-Za-z][\\w]*)\\s*(=)?",
-          "captures": {
+          "begin": "^\\s*(global)\\s+(const)\\s+(int|float|bool|string|asset|vector)\\s+([_A-Za-z][\\w]*)\\s*(=)",
+          "beginCaptures": {
             "1": { "name": "storage.modifier.global.squirrel" },
-            "2": { "name": "storage.modifier.const.squirrel" },
+            "2": { "name": "storage.type.const.squirrel" },
             "3": { "name": "storage.type.squirrel" },
             "4": { "name": "variable.other.constant.squirrel" },
             "5": { "name": "keyword.operator.assignment.squirrel" }
-          }
+          },
+          "end": "(?=$|//)",
+          "patterns": [
+            { "include": "#asset-literal" },
+            { "include": "#vector-literal" },
+            { "include": "#constants" },
+            { "include": "#strings" },
+            { "include": "#identifiers" }
+          ]
         },
         {
           "comment": "global const NAME = value (untyped)",
-          "match": "^\\s*(global)\\s+(const)\\s+([_A-Z][_A-Z0-9]*)\\s*(=)?",
-          "captures": {
+          "begin": "^\\s*(global)\\s+(const)\\s+([_A-Z][_A-Z0-9]*)\\s*(=)",
+          "beginCaptures": {
             "1": { "name": "storage.modifier.global.squirrel" },
-            "2": { "name": "storage.modifier.const.squirrel" },
+            "2": { "name": "storage.type.const.squirrel" },
             "3": { "name": "variable.other.constant.squirrel" },
             "4": { "name": "keyword.operator.assignment.squirrel" }
-          }
+          },
+          "end": "(?=$|//)",
+          "patterns": [
+            { "include": "#asset-literal" },
+            { "include": "#vector-literal" },
+            { "include": "#constants" },
+            { "include": "#strings" },
+            { "include": "#identifiers" }
+          ]
         },
         {
-          "comment": "const NAME = value",
-          "match": "^\\s*(const)\\s+(int|float|bool|string|asset|vector)?\\s*([_A-Za-z][\\w]*)\\s*(=)?",
-          "captures": {
-            "1": { "name": "storage.modifier.const.squirrel" },
+          "comment": "const TYPE NAME = value",
+          "begin": "^\\s*(const)\\s+(int|float|bool|string|asset|vector)\\s+([_A-Za-z][\\w]*)\\s*(=)",
+          "beginCaptures": {
+            "1": { "name": "storage.type.const.squirrel" },
             "2": { "name": "storage.type.squirrel" },
             "3": { "name": "variable.other.constant.squirrel" },
             "4": { "name": "keyword.operator.assignment.squirrel" }
-          }
+          },
+          "end": "(?=$|//)",
+          "patterns": [
+            { "include": "#asset-literal" },
+            { "include": "#vector-literal" },
+            { "include": "#constants" },
+            { "include": "#strings" },
+            { "include": "#identifiers" }
+          ]
+        },
+        {
+          "comment": "const NAME = value (untyped)",
+          "begin": "^\\s*(const)\\s+([_A-Z][_A-Z0-9]*)\\s*(=)",
+          "beginCaptures": {
+            "1": { "name": "storage.type.const.squirrel" },
+            "2": { "name": "variable.other.constant.squirrel" },
+            "3": { "name": "keyword.operator.assignment.squirrel" }
+          },
+          "end": "(?=$|//)",
+          "patterns": [
+            { "include": "#asset-literal" },
+            { "include": "#vector-literal" },
+            { "include": "#constants" },
+            { "include": "#strings" },
+            { "include": "#identifiers" }
+          ]
         }
       ]
     },
@@ -205,7 +250,7 @@
       },
       "end": "([_A-Za-z][\\w\\.]*)",
       "endCaptures": {
-        "1": { "name": "entity.name.type.class.squirrel" }
+        "1": { "name": "support.class.squirrel" }
       },
       "name": "meta.class.identifier.squirrel",
       "patterns": [
@@ -222,7 +267,7 @@
         { "include": "#modifiers-inheritance" },
         {
           "match": "\\b([_A-Za-z][\\w\\.]*)\\b",
-          "name": "entity.name.type.class.squirrel"
+          "name": "support.class.squirrel"
         }
       ]
     },
@@ -244,18 +289,15 @@
     },
 
     "struct": {
-      "begin": "\\b(global\\s+)?(struct)\\b",
+      "begin": "\\b(global\\s+)?(struct)\\s+([_A-Za-z][\\w]*)",
       "beginCaptures": {
         "1": { "name": "storage.modifier.global.squirrel" },
-        "2": { "name": "storage.type.struct.squirrel" }
+        "2": { "name": "storage.type.struct.squirrel" },
+        "3": { "name": "support.class.struct.squirrel" }
       },
       "end": "(?<=\\})",
       "name": "meta.struct.squirrel",
       "patterns": [
-        {
-          "match": "\\b([_A-Za-z][\\w]*)\\b(?=\\s*\\{)",
-          "name": "entity.name.type.struct.squirrel"
-        },
         { "include": "#struct-block" }
       ]
     },
@@ -303,7 +345,7 @@
         {
           "match": "\\b([_A-Za-z][\\w]*)\\s*(&)?\\s+([_A-Za-z][\\w]*)\\s*(?==|$)",
           "captures": {
-            "1": { "name": "entity.name.type.squirrel" },
+            "1": { "name": "support.class.squirrel" },
             "2": { "name": "keyword.operator.reference.squirrel" },
             "3": { "name": "variable.other.member.squirrel" }
           }
@@ -317,8 +359,8 @@
       "captures": {
         "1": { "name": "storage.modifier.global.squirrel" },
         "2": { "name": "storage.type.typedef.squirrel" },
-        "3": { "name": "entity.name.type.typedef.squirrel" },
-        "4": { "name": "entity.name.type.squirrel" }
+        "3": { "name": "support.class.squirrel" },
+        "4": { "name": "support.class.squirrel" }
       }
     },
 
@@ -473,7 +515,7 @@
         },
         {
           "match": "\\b([_A-Za-z][\\w]*)\\b",
-          "name": "entity.name.type.squirrel"
+          "name": "support.class.squirrel"
         },
         {
           "match": ",",
@@ -539,6 +581,14 @@
             "4": { "name": "punctuation.definition.generic.end.squirrel" },
             "5": { "name": "variable.other.squirrel" }
           }
+        },
+        {
+          "comment": "Custom type variable declaration: TypeName variableName",
+          "match": "^\\s*([A-Z][_A-Za-z0-9]*)\\s+([_a-z][_A-Za-z0-9]*)(?=\\s*$|\\s*\\.|\\s*=|\\s*\\[)",
+          "captures": {
+            "1": { "name": "support.class.squirrel" },
+            "2": { "name": "variable.other.squirrel" }
+          }
         }
       ]
     },
@@ -559,7 +609,7 @@
     "asset-literal": {
       "match": "(\\$)(\"[^\"]*\")",
       "captures": {
-        "1": { "name": "punctuation.definition.asset.squirrel" },
+        "1": { "name": "keyword.control.asset.squirrel" },
         "2": { "name": "string.quoted.double.asset.squirrel" }
       }
     },
@@ -807,12 +857,16 @@
           "match": "\\b(class|enum|struct|typedef)\\s+([_A-Za-z][\\w]*)\\b",
           "captures": {
             "1": { "name": "storage.type.squirrel" },
-            "2": { "name": "entity.name.type.squirrel" }
+            "2": { "name": "support.class.squirrel" }
           }
         },
         {
-          "match": "\\b(local|global|static|const)\\b",
+          "match": "\\b(local|global|static)\\b",
           "name": "storage.modifier.squirrel"
+        },
+        {
+          "match": "\\b(const)\\b",
+          "name": "storage.type.const.squirrel"
         },
         {
           "match": "^\\s*(::)",
@@ -956,7 +1010,7 @@
           "name": "storage.type.modifier.squirrel"
         },
         {
-          "match": "\\b(var|const|typedef|functionref)\\b",
+          "match": "\\b(var|typedef|functionref)\\b",
           "name": "storage.type.squirrel"
         },
         {
@@ -1108,7 +1162,7 @@
 
     "constant-name": {
       "match": "\\b([_A-Z][_A-Z0-9]+)\\b",
-      "name": "constant.other.caps.squirrel"
+      "name": "variable.other.constant.squirrel"
     },
     "f-identifier": {
       "match": "\\b([_A-Za-z][\\w]*)\\b",

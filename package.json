@@ -2,7 +2,7 @@
   "name": "respawn-squirrel-extension",
   "displayName": "Squirrel (Respawn)",
   "description": "Full language support for Respawn Entertainment games (Apex Legends, Titanfall). Includes IntelliSense, syntax highlighting, and snippets for Squirrel scripts and config files.",
-  "version": "2.6.0",
+  "version": "3.0.1",
   "publisher": "zee",
   "icon": "acorn.png",
   "license": "MIT",
@@ -45,11 +45,7 @@
           ".nut",
           ".gnut"
         ],
-        "configuration": "./syntaxes/squirrel.language-configuration.json",
-        "icon": {
-          "light": "./acorn.png",
-          "dark": "./acorn.png"
-        }
+        "configuration": "./syntaxes/squirrel.language-configuration.json"
       },
       {
         "id": "rson",
