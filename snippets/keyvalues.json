@@ -1,0 +1,285 @@
+{
+  "// ===== WEAPON CONFIG =====": {},
+
+  "Base Include": {
+    "prefix": "#base",
+    "body": "#base \"${1:_base_file.txt}\"",
+    "description": "Include a base weapon/config file"
+  },
+
+  "WeaponData Block": {
+    "prefix": "WeaponData",
+    "body": [
+      "WeaponData",
+      "{",
+      "\t// General",
+      "\t\"weaponClass\"\t\t\t\t\t\t\t\t\t\"${1:human}\"",
+      "\t\"weaponSubClass\"\t\t\t\t\t\t\t\t\"${2:rifle}\"",
+      "\t",
+      "\t// Damage",
+      "\t\"damage_type\"\t\t\t\t\t\t\t\t\t\"bullet\"",
+      "\t\"damage_near_value\"\t\t\t\t\t\t\t\t\"${3:25}\"",
+      "\t\"damage_far_value\"\t\t\t\t\t\t\t\t\"${4:20}\"",
+      "\t\"damage_near_distance\"\t\t\t\t\t\t\t\"${5:1000}\"",
+      "\t\"damage_far_distance\"\t\t\t\t\t\t\t\"${6:2500}\"",
+      "\t",
+      "\t$0",
+      "}"
+    ],
+    "description": "Weapon data block template"
+  },
+
+  "Mods Block": {
+    "prefix": "Mods",
+    "body": [
+      "Mods",
+      "{",
+      "\t${1:mod_name}",
+      "\t{",
+      "\t\t$0",
+      "\t}",
+      "}"
+    ],
+    "description": "Weapon mods block"
+  },
+
+  "Mod Entry": {
+    "prefix": "mod",
+    "body": [
+      "${1:mod_name}",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "Individual mod entry"
+  },
+
+  "Damage Flags": {
+    "prefix": "damage_flags",
+    "body": "\"damage_flags\"\t\t\t\t\t\t\t\t\t\"${1|DF_BULLET,DF_KNOCK_BACK,DF_DISMEMBERMENT,DF_EXPLOSION,DF_MELEE,DF_BURN,DF_ELECTRICAL,DF_STOPS_TITAN_REGEN|} | ${2|DF_BULLET,DF_KNOCK_BACK,DF_DISMEMBERMENT,DF_EXPLOSION,DF_MELEE,DF_BURN,DF_ELECTRICAL,DF_STOPS_TITAN_REGEN|}\"",
+    "description": "Damage flags property"
+  },
+
+  "Key Value Quoted": {
+    "prefix": "kv",
+    "body": "\"${1:key}\"\t\t\t\t\t\t\t\t\t\t\t\"${2:value}\"",
+    "description": "Quoted key-value pair"
+  },
+
+  "// ===== UI / RES FILES =====": {},
+
+  "Control Panel": {
+    "prefix": "control",
+    "body": [
+      "${1:ControlName}",
+      "{",
+      "\tControlName\t\t\t\t${2|Label,RuiPanel,RuiButton,ImagePanel,CNestedPanel,CBaseHudChat|}",
+      "\txpos\t\t\t\t\t${3:0}",
+      "\typos\t\t\t\t\t${4:0}",
+      "\twide\t\t\t\t\t${5:100}",
+      "\ttall\t\t\t\t\t${6:100}",
+      "\tvisible\t\t\t\t\t${7|1,0|}",
+      "\t$0",
+      "}"
+    ],
+    "description": "UI control/panel definition"
+  },
+
+  "RuiButton": {
+    "prefix": "ruibutton",
+    "body": [
+      "${1:ButtonName}",
+      "{",
+      "\tControlName\t\t\t\tRuiButton",
+      "\twide\t\t\t\t\t${2:200}",
+      "\ttall\t\t\t\t\t${3:50}",
+      "\txpos\t\t\t\t\t${4:0}",
+      "\typos\t\t\t\t\t${5:0}",
+      "\trui\t\t\t\t\t\t\"${6:ui/generic_button.rpak}\"",
+      "\tlabelText\t\t\t\t\"\"",
+      "\tvisible\t\t\t\t\t1",
+      "\t$0",
+      "}"
+    ],
+    "description": "RUI button definition"
+  },
+
+  "RuiPanel": {
+    "prefix": "ruipanel",
+    "body": [
+      "${1:PanelName}",
+      "{",
+      "\tControlName\t\t\t\tRuiPanel",
+      "\twide\t\t\t\t\t${2:300}",
+      "\ttall\t\t\t\t\t${3:100}",
+      "\txpos\t\t\t\t\t${4:0}",
+      "\typos\t\t\t\t\t${5:0}",
+      "\trui\t\t\t\t\t\t\"${6:ui/element.rpak}\"",
+      "\tvisible\t\t\t\t\t1",
+      "\t$0",
+      "}"
+    ],
+    "description": "RUI panel definition"
+  },
+
+  "Label": {
+    "prefix": "label",
+    "body": [
+      "${1:LabelName}",
+      "{",
+      "\tControlName\t\t\t\tLabel",
+      "\twide\t\t\t\t\t${2:200}",
+      "\ttall\t\t\t\t\t${3:30}",
+      "\txpos\t\t\t\t\t${4:0}",
+      "\typos\t\t\t\t\t${5:0}",
+      "\tlabelText\t\t\t\t\"${6:}\"",
+      "\tvisible\t\t\t\t\t1",
+      "\t$0",
+      "}"
+    ],
+    "description": "Label control definition"
+  },
+
+  "Nested Panel": {
+    "prefix": "nestedpanel",
+    "body": [
+      "${1:PanelName}",
+      "{",
+      "\tControlName\t\t\t\tCNestedPanel",
+      "\twide\t\t\t\t\t${2:%100}",
+      "\ttall\t\t\t\t\t${3:%100}",
+      "\tvisible\t\t\t\t\t${4|1,0|}",
+      "\tcontrolSettingsFile\t\t\"${5:scripts/resource/ui/menus/panels/panel.res}\"",
+      "\t$0",
+      "}"
+    ],
+    "description": "Nested panel with external file"
+  },
+
+  "Pin to Sibling": {
+    "prefix": "pin",
+    "body": [
+      "pin_to_sibling\t\t\t${1:SiblingName}",
+      "pin_corner_to_sibling\t${2|TOP_LEFT,TOP,TOP_RIGHT,LEFT,CENTER,RIGHT,BOTTOM_LEFT,BOTTOM,BOTTOM_RIGHT|}",
+      "pin_to_sibling_corner\t${3|TOP_LEFT,TOP,TOP_RIGHT,LEFT,CENTER,RIGHT,BOTTOM_LEFT,BOTTOM,BOTTOM_RIGHT|}"
+    ],
+    "description": "Pin control to sibling"
+  },
+
+  "RuiArgs Block": {
+    "prefix": "ruiargs",
+    "body": [
+      "ruiArgs",
+      "{",
+      "\t${1:argName}\t\t\"${2:value}\"",
+      "\t$0",
+      "}"
+    ],
+    "description": "RUI arguments block"
+  },
+
+  "Navigation": {
+    "prefix": "nav",
+    "body": [
+      "navUp\t\t\t\t\t${1:ControlName}",
+      "navDown\t\t\t\t\t${2:ControlName}",
+      "navLeft\t\t\t\t\t${3:ControlName}",
+      "navRight\t\t\t\t${4:ControlName}"
+    ],
+    "description": "Navigation properties"
+  },
+
+  "Platform Conditional": {
+    "prefix": "[$",
+    "body": "[\\$${1|PC,GAMECONSOLE,X360,PS3,DURANGO,PS4|}]",
+    "description": "Platform conditional"
+  },
+
+  "Full Width/Height": {
+    "prefix": "%100",
+    "body": "%100",
+    "description": "Full width/height percentage"
+  },
+
+  "Background Color": {
+    "prefix": "bgcolor",
+    "body": "bgcolor_override\t\t\"${1:0} ${2:0} ${3:0} ${4:255}\"",
+    "description": "Background color override (R G B A)"
+  },
+
+  "Font": {
+    "prefix": "font",
+    "body": "font\t\t\t\t\t${1|Default,DefaultRegularFont,Default_27,Default_21|}",
+    "description": "Font property"
+  },
+
+  "// ===== MENU FILES =====": {},
+
+  "Menu Root": {
+    "prefix": "menuroot",
+    "body": [
+      "\"${1:scripts/resource/ui/menus/menu.menu}\"",
+      "{",
+      "\t\"menu\"",
+      "\t{",
+      "\t\t\"ControlName\"\t\t\t\t\t\t\"Frame\"",
+      "\t\t\"xpos\"\t\t\t\t\t\t\t\t\"0\"",
+      "\t\t\"ypos\"\t\t\t\t\t\t\t\t\"0\"",
+      "\t\t\"zpos\"\t\t\t\t\t\t\t\t\"3\"",
+      "\t\t\"wide\"\t\t\t\t\t\t\t\t\"f0\"",
+      "\t\t\"tall\"\t\t\t\t\t\t\t\t\"f0\"",
+      "\t\t\"visible\"\t\t\t\t\t\t\t\"1\"",
+      "\t\t\"enabled\"\t\t\t\t\t\t\t\"1\"",
+      "\t\t$0",
+      "\t}",
+      "}"
+    ],
+    "description": "Menu file root template"
+  },
+
+  "Screen Control": {
+    "prefix": "screen",
+    "body": [
+      "\"Screen\"",
+      "{",
+      "\t\"ControlName\"\t\t\"Label\"",
+      "\t\"wide\"\t\t\t\t\"%100\"",
+      "\t\"tall\"\t\t\t\t\"%100\"",
+      "\t\"labelText\"\t\t\t\"\"",
+      "\t\"visible\"\t\t\t\"0\"",
+      "}"
+    ],
+    "description": "Screen background control"
+  },
+
+  "Inherit Properties": {
+    "prefix": "inherit",
+    "body": "InheritProperties\t\t${1:ParentControlName}",
+    "description": "Inherit from another control"
+  },
+
+  "// ===== COMMON =====": {},
+
+  "Localization String": {
+    "prefix": "#",
+    "body": "#${1:LOCALIZATION_KEY}",
+    "description": "Localization string reference"
+  },
+
+  "Comment": {
+    "prefix": "//",
+    "body": "// ${0:comment}",
+    "description": "Line comment"
+  },
+
+  "Block Comment": {
+    "prefix": "/*",
+    "body": [
+      "/*",
+      " * ${0:comment}",
+      " */"
+    ],
+    "description": "Block comment"
+  }
+}
+

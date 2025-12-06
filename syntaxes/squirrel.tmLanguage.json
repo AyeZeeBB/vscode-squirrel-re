@@ -1,181 +1,225 @@
 {
-  "name": "Squirrel",
+  "name": "Squirrel (Respawn)",
   "scopeName": "rspn.squirrel",
   "patterns": [
-    {
-      "include": "#all"
-    }
+    { "include": "#comments" },
+    { "include": "#preprocessor" },
+    { "include": "#global-function-forward" },
+    { "include": "#global-const-declaration" },
+    { "include": "#class" },
+    { "include": "#enum" },
+    { "include": "#struct" },
+    { "include": "#typedef" },
+    { "include": "#typed-function-declaration" },
+    { "include": "#function-declaration" },
+    { "include": "#block" },
+    { "include": "#block-contents" }
   ],
   "repository": {
     "all": {
       "patterns": [
-        {
-          "include": "#comments"
-        },
-        {
-          "include": "#class"
-        },
-        {
-          "include": "#enum"
-        },
-        {
-          "include": "#block"
-        },
-        {
-          "include": "#block-contents"
-        }
+        { "include": "#comments" },
+        { "include": "#preprocessor" },
+        { "include": "#global-function-forward" },
+        { "include": "#global-const-declaration" },
+        { "include": "#class" },
+        { "include": "#enum" },
+        { "include": "#struct" },
+        { "include": "#typedef" },
+        { "include": "#typed-function-declaration" },
+        { "include": "#function-declaration" },
+        { "include": "#block" },
+        { "include": "#block-contents" }
       ]
     },
     "global": {
       "patterns": [
-        {
-          "include": "#comments"
-        }
+        { "include": "#comments" },
+        { "include": "#preprocessor" }
       ]
     },
     "block": {
       "begin": "\\{",
       "beginCaptures": {
-        "0": {
-          "name": "punctuation.definition.block.begin.squirrel"
-        }
+        "0": { "name": "punctuation.definition.block.begin.squirrel" }
       },
       "end": "\\}",
       "endCaptures": {
-        "0": {
-          "name": "punctuation.definition.block.end.squirrel"
-        }
+        "0": { "name": "punctuation.definition.block.end.squirrel" }
       },
       "patterns": [
-        {
-          "include": "#block"
-        },
-        {
-          "include": "#block-contents"
-        }
+        { "include": "#block" },
+        { "include": "#block-contents" }
       ]
     },
     "block-contents": {
       "patterns": [
-        {
-          "include": "#global"
-        },
-        {
-          "include": "#array"
-        },
-        {
-          "include": "#constants"
-        },
-        {
-          "include": "#strings"
-        },
-        {
-          "include": "#method"
-        },
-        {
-          "include": "#variable"
-        },
-        {
-          "include": "#modifiers"
-        },
-        {
-          "include": "#for-loop"
-        },
-        {
-          "include": "#keywords"
-        },
-        {
-          "include": "#method-call"
-        },
-        {
-          "include": "#lambda-expression"
-        },
-        {
-          "include": "#punctuation-braces"
-        },
-        {
-          "include": "#operators"
-        },
-        {
-          "include": "#operator-assignment"
-        },
-        {
-          "include": "#punctuation-terminator"
-        },
-        {
-          "include": "#punctuation-comma"
-        },
-        {
-          "include": "#punctuation-accessor"
-        },
-        {
-          "include": "#identifiers"
-        }
+        { "include": "#global" },
+        { "include": "#global-function-forward" },
+        { "include": "#global-const-declaration" },
+        { "include": "#array" },
+        { "include": "#vector-literal" },
+        { "include": "#asset-literal" },
+        { "include": "#constants" },
+        { "include": "#strings" },
+        { "include": "#typed-function-declaration" },
+        { "include": "#function-declaration" },
+        { "include": "#lambda-expression" },
+        { "include": "#variable" },
+        { "include": "#modifiers" },
+        { "include": "#for-loop" },
+        { "include": "#keywords" },
+        { "include": "#typed-variables" },
+        { "include": "#method-call" },
+        { "include": "#punctuation-braces" },
+        { "include": "#operators" },
+        { "include": "#operator-assignment" },
+        { "include": "#punctuation-terminator" },
+        { "include": "#punctuation-comma" },
+        { "include": "#punctuation-accessor" },
+        { "include": "#identifiers" }
       ]
     },
     "identifiers": {
       "patterns": [
+        { "include": "#constant-name" },
+        { "include": "#f-identifier" }
+      ]
+    },
+
+    "global-function-forward": {
+      "comment": "Forward declarations like 'global function FunctionName' without body",
+      "match": "^\\s*(global)\\s+(function)\\s+([_A-Za-z][\\w]*)\\s*$",
+      "captures": {
+        "1": { "name": "storage.modifier.global.squirrel" },
+        "2": { "name": "storage.type.function.squirrel" },
+        "3": { "name": "entity.name.function.squirrel" }
+      }
+    },
+
+    "global-const-declaration": {
+      "comment": "Global const declarations",
+      "patterns": [
         {
-          "include": "#constant-name"
+          "comment": "global const TYPE NAME = value",
+          "match": "^\\s*(global)\\s+(const)\\s+(int|float|bool|string|asset|vector)\\s+([_A-Za-z][\\w]*)\\s*(=)?",
+          "captures": {
+            "1": { "name": "storage.modifier.global.squirrel" },
+            "2": { "name": "storage.modifier.const.squirrel" },
+            "3": { "name": "storage.type.squirrel" },
+            "4": { "name": "variable.other.constant.squirrel" },
+            "5": { "name": "keyword.operator.assignment.squirrel" }
+          }
         },
         {
-          "include": "#f-identifier"
+          "comment": "global const NAME = value (untyped)",
+          "match": "^\\s*(global)\\s+(const)\\s+([_A-Z][_A-Z0-9]*)\\s*(=)?",
+          "captures": {
+            "1": { "name": "storage.modifier.global.squirrel" },
+            "2": { "name": "storage.modifier.const.squirrel" },
+            "3": { "name": "variable.other.constant.squirrel" },
+            "4": { "name": "keyword.operator.assignment.squirrel" }
+          }
+        },
+        {
+          "comment": "const NAME = value",
+          "match": "^\\s*(const)\\s+(int|float|bool|string|asset|vector)?\\s*([_A-Za-z][\\w]*)\\s*(=)?",
+          "captures": {
+            "1": { "name": "storage.modifier.const.squirrel" },
+            "2": { "name": "storage.type.squirrel" },
+            "3": { "name": "variable.other.constant.squirrel" },
+            "4": { "name": "keyword.operator.assignment.squirrel" }
+          }
         }
       ]
     },
+
+    "preprocessor": {
+      "patterns": [
+        {
+          "match": "^\\s*(#\\s*(?:if|elseif|elif))\\b(.*)$",
+          "captures": {
+            "1": { "name": "keyword.control.directive.conditional.squirrel" },
+            "2": {
+              "patterns": [
+                { "include": "#preprocessor-expression" }
+              ]
+            }
+          }
+        },
+        {
+          "match": "^\\s*(#\\s*(?:else|endif))\\b",
+          "captures": {
+            "1": { "name": "keyword.control.directive.conditional.squirrel" }
+          }
+        },
+        {
+          "match": "^\\s*(#\\s*document)\\s*\\(",
+          "captures": {
+            "1": { "name": "keyword.other.documentation.squirrel" }
+          }
+        },
+        {
+          "match": "^\\s*(#\\s*(?:include|require))\\b",
+          "captures": {
+            "1": { "name": "keyword.control.import.squirrel" }
+          }
+        }
+      ]
+    },
+    "preprocessor-expression": {
+      "patterns": [
+        {
+          "match": "\\b(SERVER|CLIENT|UI|SP|MP|DEV|DEVELOPER|CONSOLE_PROG|DURANGO_PROG|PS4_PROG|PC_PROG|LOBBY|MP_PVEMODE|MP_CAMPAIGNCOOP)\\b",
+          "name": "constant.language.platform.squirrel"
+        },
+        {
+          "match": "\\b(MAP_\\w+|GAMEMODE_\\w+)\\b",
+          "name": "constant.language.condition.squirrel"
+        },
+        {
+          "match": "(&&|\\|\\||!)",
+          "name": "keyword.operator.logical.squirrel"
+        },
+        { "include": "#comments" }
+      ]
+    },
+
     "class": {
-      "begin": "(?=class)",
+      "begin": "(?=\\bclass\\b)",
       "end": "(?<=\\})|(;)",
       "endCaptures": {
-        "1": {
-          "name": "punctuation.terminator.squirrel"
-        }
+        "1": { "name": "punctuation.terminator.squirrel" }
       },
       "name": "meta.class.squirrel",
       "patterns": [
-        {
-          "include": "#class-name"
-        },
-        {
-          "include": "#class-name-post"
-        },
-        {
-          "include": "#class-block"
-        }
+        { "include": "#class-name" },
+        { "include": "#class-name-post" },
+        { "include": "#class-block" }
       ]
     },
     "class-name": {
       "begin": "\\b(class)\\b",
       "beginCaptures": {
-        "1": {
-          "name": "storage.type.class.squirrel"
-        }
+        "1": { "name": "storage.type.class.squirrel" }
       },
       "end": "([_A-Za-z][\\w\\.]*)",
       "endCaptures": {
-        "1": {
-          "name": "entity.name.type.class.squirrel"
-        }
+        "1": { "name": "entity.name.type.class.squirrel" }
       },
       "name": "meta.class.identifier.squirrel",
       "patterns": [
-        {
-          "include": "#global"
-        }
+        { "include": "#global" }
       ]
     },
     "class-name-post": {
       "begin": "(?<=\\w)",
       "end": "(\\{)",
       "endCaptures": {
-        "1": {
-          "name": "punctuation.definition.block.begin.squirrel"
-        }
+        "1": { "name": "punctuation.definition.block.begin.squirrel" }
       },
       "patterns": [
-        {
-          "include": "#modifiers-inheritance"
-        },
+        { "include": "#modifiers-inheritance" },
         {
           "match": "\\b([_A-Za-z][\\w\\.]*)\\b",
           "name": "entity.name.type.class.squirrel"
@@ -186,121 +230,356 @@
       "begin": "(?<=\\{)",
       "end": "(\\})",
       "endCaptures": {
-        "1": {
-          "name": "punctuation.definition.block.end.squirrel"
-        }
+        "1": { "name": "punctuation.definition.block.end.squirrel" }
       },
       "name": "meta.block.squirrel",
       "patterns": [
-        {
-          "include": "#method"
-        },
-        {
-          "include": "#modifiers"
-        },
-        {
-          "include": "#variable"
-        },
-        {
-          "include": "#block"
-        },
-        {
-          "include": "#block-contents"
-        }
+        { "include": "#typed-function-declaration" },
+        { "include": "#function-declaration" },
+        { "include": "#modifiers" },
+        { "include": "#variable" },
+        { "include": "#block" },
+        { "include": "#block-contents" }
       ]
     },
+
+    "struct": {
+      "begin": "\\b(global\\s+)?(struct)\\b",
+      "beginCaptures": {
+        "1": { "name": "storage.modifier.global.squirrel" },
+        "2": { "name": "storage.type.struct.squirrel" }
+      },
+      "end": "(?<=\\})",
+      "name": "meta.struct.squirrel",
+      "patterns": [
+        {
+          "match": "\\b([_A-Za-z][\\w]*)\\b(?=\\s*\\{)",
+          "name": "entity.name.type.struct.squirrel"
+        },
+        { "include": "#struct-block" }
+      ]
+    },
+    "struct-block": {
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.block.begin.squirrel" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.block.end.squirrel" }
+      },
+      "name": "meta.struct.body.squirrel",
+      "patterns": [
+        { "include": "#comments" },
+        { "include": "#preprocessor" },
+        { "include": "#struct-member" }
+      ]
+    },
+    "struct-member": {
+      "patterns": [
+        {
+          "match": "\\b(array|table)\\s*(<)([^>]+)(>)\\s*(&)?\\s+([_A-Za-z][\\w]*)",
+          "captures": {
+            "1": { "name": "storage.type.generic.squirrel" },
+            "2": { "name": "punctuation.definition.generic.begin.squirrel" },
+            "3": {
+              "patterns": [
+                { "include": "#type-parameters" }
+              ]
+            },
+            "4": { "name": "punctuation.definition.generic.end.squirrel" },
+            "5": { "name": "keyword.operator.reference.squirrel" },
+            "6": { "name": "variable.other.member.squirrel" }
+          }
+        },
+        {
+          "match": "\\b(int|string|float|vector|bool|entity|asset|var|table|array)\\s*(&)?\\s+([_A-Za-z][\\w]*)",
+          "captures": {
+            "1": { "name": "storage.type.primitive.squirrel" },
+            "2": { "name": "keyword.operator.reference.squirrel" },
+            "3": { "name": "variable.other.member.squirrel" }
+          }
+        },
+        {
+          "match": "\\b([_A-Za-z][\\w]*)\\s*(&)?\\s+([_A-Za-z][\\w]*)\\s*(?==|$)",
+          "captures": {
+            "1": { "name": "entity.name.type.squirrel" },
+            "2": { "name": "keyword.operator.reference.squirrel" },
+            "3": { "name": "variable.other.member.squirrel" }
+          }
+        },
+        { "include": "#block-contents" }
+      ]
+    },
+
+    "typedef": {
+      "match": "\\b(global\\s+)?(typedef)\\s+([_A-Za-z][\\w]*)\\s+([_A-Za-z][\\w]*)",
+      "captures": {
+        "1": { "name": "storage.modifier.global.squirrel" },
+        "2": { "name": "storage.type.typedef.squirrel" },
+        "3": { "name": "entity.name.type.typedef.squirrel" },
+        "4": { "name": "entity.name.type.squirrel" }
+      }
+    },
+
     "enum": {
-      "begin": "(?=enum)",
+      "begin": "\\b(global\\s+)?(enum)\\b",
+      "beginCaptures": {
+        "1": { "name": "storage.modifier.global.squirrel" },
+        "2": { "name": "storage.type.enum.squirrel" }
+      },
       "end": "(?<=\\})|(;)",
       "endCaptures": {
-        "1": {
-          "name": "punctuation.terminator.squirrel"
-        }
+        "1": { "name": "punctuation.terminator.squirrel" }
       },
       "name": "meta.enum.squirrel",
       "patterns": [
-        {
-          "include": "#enum-name"
-        },
-        {
-          "include": "#enum-name-post"
-        },
-        {
-          "include": "#enum-block"
-        }
+        { "include": "#enum-name" },
+        { "include": "#enum-block" }
       ]
     },
     "enum-name": {
-      "begin": "\\b(enum)\\b",
-      "beginCaptures": {
-        "1": {
-          "name": "storage.type.class.squirrel"
-        }
-      },
-      "end": "([_A-Za-z][\\w]*)",
-      "endCaptures": {
-        "1": {
-          "name": "entity.name.type.class.squirrel"
-        }
-      },
-      "patterns": [
-        {
-          "include": "#global"
-        }
-      ]
+      "match": "\\b([_A-Za-z][\\w]*)\\b(?=\\s*\\{)",
+      "name": "entity.name.type.enum.squirrel"
     },
     "enum-block": {
-      "begin": "(?<=\\{)",
-      "end": "(\\})",
-      "endCaptures": {
-        "1": {
-          "name": "punctuation.definition.block.end.squirrel"
-        }
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.block.begin.squirrel" }
       },
-      "name": "meta.block.squirrel",
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.block.end.squirrel" }
+      },
+      "name": "meta.enum.body.squirrel",
+      "patterns": [
+        { "include": "#comments" },
+        {
+          "match": "\\b([_A-Za-z][\\w]*)\\s*(?==|,|\\})",
+          "captures": {
+            "1": { "name": "variable.other.enummember.squirrel" }
+          }
+        },
+        { "include": "#constants" },
+        { "include": "#operators" },
+        { "include": "#punctuation-comma" }
+      ]
+    },
+
+    "typed-function-declaration": {
+      "begin": "\\b(void|int|float|bool|string|vector|entity|asset|var|array(?:<[^>]+>)?|table(?:<[^>]+>)?|[_A-Za-z][\\w]*)\\s+(ornull\\s+)?(function)\\b\\s*(?:(constructor)|([_A-Za-z][\\w]*))?",
+      "beginCaptures": {
+        "1": { "name": "storage.type.return.squirrel" },
+        "2": { "name": "storage.modifier.ornull.squirrel" },
+        "3": { "name": "storage.type.function.squirrel" },
+        "4": { "name": "entity.name.function.constructor.squirrel" },
+        "5": { "name": "entity.name.function.squirrel" }
+      },
+      "end": "(?<=\\})|(?=;)",
+      "name": "meta.function.typed.squirrel",
+      "patterns": [
+        { "include": "#function-parameters" },
+        { "include": "#function-block" }
+      ]
+    },
+
+    "function-declaration": {
+      "begin": "\\b(function)\\b\\s*(?:(constructor)|([_A-Za-z][\\w]*))?",
+      "beginCaptures": {
+        "1": { "name": "storage.type.function.squirrel" },
+        "2": { "name": "entity.name.function.constructor.squirrel" },
+        "3": { "name": "entity.name.function.squirrel" }
+      },
+      "end": "(?<=\\})|(?=;)",
+      "name": "meta.function.squirrel",
+      "patterns": [
+        { "include": "#function-parameters" },
+        { "include": "#function-block" }
+      ]
+    },
+
+    "function-parameters": {
+      "begin": "\\(",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.parameters.begin.squirrel" }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.parameters.end.squirrel" }
+      },
+      "name": "meta.parameters.squirrel",
+      "patterns": [
+        { "include": "#comments" },
+        { "include": "#functionref-parameter" },
+        { "include": "#typed-parameter" },
+        { "include": "#untyped-parameter" },
+        { "include": "#parameter-default" },
+        { "include": "#punctuation-comma" }
+      ]
+    },
+    "functionref-parameter": {
+      "match": "(void|int|float|bool|string|vector|entity|asset|var|array(?:<[^>]+>)?|table(?:<[^>]+>)?|[_A-Za-z][\\w]*)\\s+(functionref)\\s*\\(([^)]*)\\)\\s+([_A-Za-z][\\w]*)",
+      "captures": {
+        "1": { "name": "storage.type.return.squirrel" },
+        "2": { "name": "storage.type.functionref.squirrel" },
+        "3": {
+          "patterns": [
+            { "include": "#type-parameters" }
+          ]
+        },
+        "4": { "name": "variable.parameter.squirrel" }
+      }
+    },
+    "typed-parameter": {
+      "match": "\\b(array|table)\\s*(<)([^>]+)(>)\\s*(&)?\\s*(ornull\\s+)?([_A-Za-z][\\w]*)",
+      "captures": {
+        "1": { "name": "storage.type.generic.squirrel" },
+        "2": { "name": "punctuation.definition.generic.begin.squirrel" },
+        "3": {
+          "patterns": [
+            { "include": "#type-parameters" }
+          ]
+        },
+        "4": { "name": "punctuation.definition.generic.end.squirrel" },
+        "5": { "name": "keyword.operator.reference.squirrel" },
+        "6": { "name": "storage.modifier.ornull.squirrel" },
+        "7": { "name": "variable.parameter.squirrel" }
+      }
+    },
+    "untyped-parameter": {
+      "match": "\\b(int|float|bool|string|vector|entity|asset|var|table|array|[_A-Za-z][\\w]*)\\s+(ornull\\s+)?([_A-Za-z][\\w]*)",
+      "captures": {
+        "1": { "name": "storage.type.squirrel" },
+        "2": { "name": "storage.modifier.ornull.squirrel" },
+        "3": { "name": "variable.parameter.squirrel" }
+      }
+    },
+    "parameter-default": {
+      "begin": "=",
+      "beginCaptures": {
+        "0": { "name": "keyword.operator.assignment.squirrel" }
+      },
+      "end": "(?=[,)])",
+      "patterns": [
+        { "include": "#block-contents" }
+      ]
+    },
+
+    "type-parameters": {
       "patterns": [
         {
-          "include": "#global"
+          "match": "\\b(int|float|bool|string|vector|entity|asset|var|void|array|table)\\b",
+          "name": "storage.type.primitive.squirrel"
         },
         {
-          "include": "#parameters"
+          "match": "\\b([_A-Za-z][\\w]*)\\b",
+          "name": "entity.name.type.squirrel"
         },
         {
-          "include": "#identifiers"
+          "match": ",",
+          "name": "punctuation.separator.comma.squirrel"
+        },
+        {
+          "match": "<|>",
+          "name": "punctuation.definition.generic.squirrel"
         }
       ]
     },
+
+    "function-block": {
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.block.begin.squirrel" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.block.end.squirrel" }
+      },
+      "name": "meta.function.body.squirrel",
+      "patterns": [
+        { "include": "#block" },
+        { "include": "#block-contents" }
+      ]
+    },
+
     "lambda-expression": {
       "patterns": [
         {
-          "match": "@()",
+          "match": "@\\(",
           "name": "storage.type.function.lambda.squirrel"
+        },
+        {
+          "begin": "(@)\\s*\\(",
+          "beginCaptures": {
+            "1": { "name": "storage.type.function.lambda.squirrel" }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": { "name": "meta.brace.round.squirrel" }
+          },
+          "patterns": [
+            { "include": "#block-contents" }
+          ]
         }
       ]
     },
+
+    "typed-variables": {
+      "patterns": [
+        {
+          "match": "\\b(array|table)\\s*(<)([^>]+)(>)\\s+([_A-Za-z][\\w]*)",
+          "captures": {
+            "1": { "name": "storage.type.generic.squirrel" },
+            "2": { "name": "punctuation.definition.generic.begin.squirrel" },
+            "3": {
+              "patterns": [
+                { "include": "#type-parameters" }
+              ]
+            },
+            "4": { "name": "punctuation.definition.generic.end.squirrel" },
+            "5": { "name": "variable.other.squirrel" }
+          }
+        }
+      ]
+    },
+
+    "vector-literal": {
+      "comment": "Vector literals like <0, 0, 0> - must have commas to distinguish from comparison operators",
+      "match": "(<)\\s*([^<>,]+)\\s*,\\s*([^<>,]+)\\s*,\\s*([^<>]+)\\s*(>)",
+      "captures": {
+        "1": { "name": "punctuation.definition.vector.begin.squirrel" },
+        "2": { "name": "constant.numeric.vector-component.squirrel" },
+        "3": { "name": "constant.numeric.vector-component.squirrel" },
+        "4": { "name": "constant.numeric.vector-component.squirrel" },
+        "5": { "name": "punctuation.definition.vector.end.squirrel" }
+      },
+      "name": "meta.vector.literal.squirrel"
+    },
+
+    "asset-literal": {
+      "match": "(\\$)(\"[^\"]*\")",
+      "captures": {
+        "1": { "name": "punctuation.definition.asset.squirrel" },
+        "2": { "name": "string.quoted.double.asset.squirrel" }
+      }
+    },
+
     "array": {
       "begin": "\\[",
       "beginCaptures": {
-        "0": {
-          "name": "punctuation.definition.array.begin.squirrel"
-        }
+        "0": { "name": "punctuation.definition.array.begin.squirrel" }
       },
       "end": "\\]",
       "endCaptures": {
-        "0": {
-          "name": "punctuation.definition.array.end.squirrel"
-        }
+        "0": { "name": "punctuation.definition.array.end.squirrel" }
       },
       "name": "meta.array.literal.squirrel",
       "patterns": [
-        {
-          "include": "#block"
-        },
-        {
-          "include": "#block-contents"
-        }
+        { "include": "#block" },
+        { "include": "#block-contents" }
       ]
     },
+
     "constants": {
       "patterns": [
         {
@@ -318,13 +597,13 @@
         {
           "match": "\\b[-]?[0-9]+(\\.)[0-9]+(?:[eE][+-]?[0-9]+)?\\b",
           "captures": {
-            "0": {
-              "name": "constant.numeric.float.squirrel"
-            },
-            "1": {
-              "name": "meta.delimiter.decimal.period.squirrel"
-            }
+            "0": { "name": "constant.numeric.float.squirrel" },
+            "1": { "name": "meta.delimiter.decimal.period.squirrel" }
           }
+        },
+        {
+          "match": "\\b[-]?[0-9]+[eE][+-]?[0-9]+\\b",
+          "name": "constant.numeric.float.scientific.squirrel"
         },
         {
           "match": "\\b0[0-7]+\\b",
@@ -339,7 +618,7 @@
           "name": "constant.numeric.integer.decimal.squirrel"
         },
         {
-          "match": "\\b0(x|X)[\\h]+\\b",
+          "match": "\\b0(x|X)[0-9a-fA-F]+\\b",
           "name": "constant.numeric.integer.hexadecimal.squirrel"
         },
         {
@@ -347,22 +626,16 @@
           "name": "invalid.illegal.integer.hexadecimal.squirrel"
         },
         {
-          "match": "(\\')(?:[^'\\\\]|(\\\\.|\\\\x[\\h]{2}))(\\')",
+          "match": "(\\')(?:[^'\\\\]|(\\\\.|\\\\x[0-9a-fA-F]{2}))(\\')",
           "name": "constant.numeric.integer.other.squirrel",
           "captures": {
-            "1": {
-              "name": "punctuation.definition.string.begin.squirrel"
-            },
+            "1": { "name": "punctuation.definition.string.begin.squirrel" },
             "2": {
               "patterns": [
-                {
-                  "include": "#string-escape-sequences"
-                }
+                { "include": "#string-escape-sequences" }
               ]
             },
-            "3": {
-              "name": "punctuation.definition.string.end.squirrel"
-            }
+            "3": { "name": "punctuation.definition.string.end.squirrel" }
           }
         },
         {
@@ -371,99 +644,61 @@
         }
       ]
     },
+
     "comments": {
       "patterns": [
         {
           "begin": "(\\/\\/).*",
           "beginCaptures": {
-            "1": {
-              "name": "punctuation.definition.comment.squirrel"
-            }
+            "1": { "name": "punctuation.definition.comment.squirrel" }
           },
           "end": "(?=$)",
           "name": "comment.line.double-slash.squirrel"
         },
         {
-          "begin": "(#(if|elseif|endif|else|document))(\\s*([A-z0-9_?\\(\\)\\&\\|]*)\\s*)?(\/\/.*)?",
+          "begin": "/\\*",
           "beginCaptures": {
-            "0": {
-              "name": "punctuation.definition.comment.squirrel"
-            },
-            "5": {
-              "name": "comment.line.double-slash.squirrel"
-            }
-          },
-          "end": "(?=$)",
-          "name": "punctuation.definition.tag"
-        },
-        {
-          "begin": "/\\*(?!/)",
-          "beginCaptures": {
-            "1": {
-              "name": "punctuation.definition.comment.squirrel"
-            }
+            "0": { "name": "punctuation.definition.comment.begin.squirrel" }
           },
           "end": "\\*/",
           "endCaptures": {
-            "1": {
-              "name": "punctuation.definition.comment.squirrel"
-            }
+            "0": { "name": "punctuation.definition.comment.end.squirrel" }
           },
           "name": "comment.block.squirrel"
         }
       ]
     },
+
     "strings": {
       "patterns": [
         {
           "begin": "@\\\"",
           "beginCaptures": {
-            "0": {
-              "name": "punctuation.definition.string.begin.squirrel"
-            }
+            "0": { "name": "punctuation.definition.string.begin.squirrel" }
           },
           "end": "\\\"",
           "endCaptures": {
-            "0": {
-              "name": "punctuation.definition.string.end.squirrel"
-            }
+            "0": { "name": "punctuation.definition.string.end.squirrel" }
           },
-          "name": "string.quoted.double.squirrel",
-          "patterns": [
-            {
-              "include": "#string-escape-sequences"
-            }
-          ]
+          "name": "string.quoted.double.verbatim.squirrel"
         },
         {
           "begin": "(\\$\\\")",
           "beginCaptures": {
-            "0": {
-              "name": "string.quoted.double.squirrel"
-            },
-            "1": {
-              "name": "punctuation.definition.string.begin.squirrel"
-            }
+            "0": { "name": "string.quoted.double.interpolated.squirrel" },
+            "1": { "name": "punctuation.definition.string.begin.squirrel" }
           },
           "end": "(\\\")",
           "endCaptures": {
-            "0": {
-              "name": "string.quoted.double.squirrel"
-            },
-            "1": {
-              "name": "punctuation.definition.string.end.squirrel"
-            }
+            "0": { "name": "string.quoted.double.interpolated.squirrel" },
+            "1": { "name": "punctuation.definition.string.end.squirrel" }
           },
           "patterns": [
-            {
-              "include": "#block"
-            },
-            {
-              "include": "#string-escape-sequences"
-            },
+            { "include": "#block" },
+            { "include": "#string-escape-sequences" },
             {
               "match": "[^\\\"\\{\\}]*",
-              "name": "string.quoted.double.squirrel"
+              "name": "string.quoted.double.interpolated.squirrel"
             }
           ]
         },
@@ -471,19 +706,13 @@
           "match": "(\\\")((?:[^\"\\\\]|\\\\.)*)(\\\")",
           "name": "string.quoted.double.squirrel",
           "captures": {
-            "1": {
-              "name": "punctuation.definition.string.begin.squirrel"
-            },
+            "1": { "name": "punctuation.definition.string.begin.squirrel" },
             "2": {
               "patterns": [
-                {
-                  "include": "#string-escape-sequences"
-                }
+                { "include": "#string-escape-sequences" }
               ]
             },
-            "3": {
-              "name": "punctuation.definition.string.end.squirrel"
-            }
+            "3": { "name": "punctuation.definition.string.end.squirrel" }
           }
         }
       ]
@@ -491,16 +720,16 @@
     "string-escape-sequences": {
       "patterns": [
         {
-          "match": "\\\\x[\\h]{2}",
-          "name": "constant.character.escape.squirrel"
+          "match": "\\\\x[0-9a-fA-F]{2}",
+          "name": "constant.character.escape.hex.squirrel"
         },
         {
-          "match": "\\\\u[\\h]{4}",
-          "name": "constant.character.escape.squirrel"
+          "match": "\\\\u[0-9a-fA-F]{4}",
+          "name": "constant.character.escape.unicode.squirrel"
         },
         {
-          "match": "\\\\U[\\h]{8}",
-          "name": "constant.character.escape.squirrel"
+          "match": "\\\\U[0-9a-fA-F]{8}",
+          "name": "constant.character.escape.unicode-long.squirrel"
         },
         {
           "match": "\\\\[0tabnrvf\\\"\\'\\\\]",
@@ -512,263 +741,73 @@
         }
       ]
     },
-    "method": {
-      "begin": "(?=\\bfunction\\b)",
-      "end": "(?<=[\\}])",
-      "name": "meta.method.squirrel",
-      "patterns": [
-        {
-          "include": "#method-name"
-        },
-        {
-          "include": "#method-name-post"
-        },
-        {
-          "include": "#method-block"
-        }
-      ]
-    },
-    "method-name": {
-      "begin": "\\b(function)\\b\\s*\\b(?:(constructor)|([_A-Za-z][\\w]*))?\\b",
-      "beginCaptures": {
-        "0": {
-          "name": "entity.name.type"
-        },
-        "1": {
-          "name": "storage.type.function.squirrel"
-        },
-        "2": {
-          "name": "storage.type.squirrel"
-        },
-        "3": {
-          "name": "entity.name.function.squirrel"
-        }
-      },
-      "end": "(?=$|\\()"
-    },
-    "method-name-post": {
-      "begin": "(?<=[\\w\\s])",
-      "end": "(\\{)",
-      "endCaptures": {
-        "1": {
-          "name": "punctuation.definition.block.begin.squirrel"
-        }
-      },
-      "patterns": [
-        {
-          "include": "#parameters"
-        },
-        {
-          "include": "#block"
-        },
-        {
-          "include": "#block-contents"
-        }
-      ]
-    },
-    "method-block": {
-      "begin": "(?<=\\{)",
-      "beginCaptures": {
-        "1": {
-          "name": "punctuation.definition.block.begin.squirrel"
-        }
-      },
-      "end": "(\\})",
-      "endCaptures": {
-        "1": {
-          "name": "punctuation.definition.block.end.squirrel"
-        }
-      },
-      "name": "meta.method.block.squirrel",
-      "patterns": [
-        {
-          "include": "#block"
-        },
-        {
-          "include": "#block-contents"
-        }
-      ]
-    },
-    "parameters": {
-      "begin": "\\(",
-      "beginCaptures": {
-        "0": {
-          "name": "punctuation.definition.parameters.begin.squirrel"
-        }
-      },
-      "end": "\\s*(\\))",
-      "endCaptures": {
-        "1": {
-          "name": "punctuation.definition.parameters.end.squirrel"
-        }
-      },
-      "name": "meta.parameters.squirrel",
-      "patterns": [
-        {
-          "include": "#parameter"
-        }
-      ]
-    },
-    "parameter": {
-      "begin": "(?<=\\(|,)",
-      "end": "(?=\\)|,)",
-      "patterns": [
-        {
-          "include": "#parameter-name"
-        },
-        {
-          "include": "#parameter-assign"
-        },
-        {
-          "include": "#punctuation-comma"
-        },
-        {
-          "include": "#global"
-        }
-      ]
-    },
-    "parameter-name": {
-      "begin": "(?<=\\(|,)",
-      "end": "([_a-zA-Z][\\w]*)",
-      "endCaptures": {
-        "1": {
-          "name": "storage.type.variable.squirrel"
-        }
-      },
-      "patterns": [
-        {
-          "include": "#global"
-        },
-        {
-          "include": "#metadata"
-        },
-        {
-          "include": "#operator-optional"
-        }
-      ]
-    },
-    "parameter-assign": {
-      "begin": "=",
-      "beginCaptures": {
-        "0": {
-          "name": "keyword.operator.assignment.squirrel"
-        }
-      },
-      "end": "(?=\\)|,)",
-      "patterns": [
-        {
-          "include": "#block"
-        },
-        {
-          "include": "#block-contents"
-        }
-      ]
-    },
-    "operator-optional": {
-      "match": "(\\?)(?!\\s)",
-      "name": "keyword.operator.optional.squirrel"
-    },
+
     "variable": {
-      "begin": "(?=\\b(local)\\b)",
+      "begin": "(?=\\b(local|global)\\b)",
       "end": "(?=$)|(;)",
       "endCaptures": {
-        "1": {
-          "name": "punctuation.terminator.squirrel"
-        }
+        "1": { "name": "punctuation.terminator.squirrel" }
       },
       "patterns": [
-        {
-          "include": "#variable-name"
-        },
-        {
-          "include": "#variable-name-next"
-        },
-        {
-          "include": "#variable-assign"
-        },
-        {
-          "include": "#variable-name-post"
-        }
+        { "include": "#variable-name" },
+        { "include": "#variable-name-next" },
+        { "include": "#variable-assign" },
+        { "include": "#variable-name-post" }
       ]
     },
     "variable-name": {
       "begin": "\\b(local|global)\\b",
       "beginCaptures": {
-        "1": {
-          "name": "storage.type.variable.squirrel"
-        }
+        "1": { "name": "storage.modifier.squirrel" }
       },
       "end": "(?=$)|([_a-zA-Z][\\w]*)",
       "endCaptures": {
-        "1": {
-          "name": "variable.other.squirrel"
-        }
+        "1": { "name": "variable.other.squirrel" }
       },
       "patterns": [
-        {
-          "include": "#operator-optional"
-        }
+        { "include": "#operator-optional" }
       ]
     },
     "variable-name-next": {
       "begin": ",",
       "beginCaptures": {
-        "0": {
-          "name": "punctuation.separator.comma.squirrel"
-        }
+        "0": { "name": "punctuation.separator.comma.squirrel" }
       },
       "end": "([_a-zA-Z][\\w]*)",
       "endCaptures": {
-        "1": {
-          "name": "variable.other.squirrel"
-        }
+        "1": { "name": "variable.other.squirrel" }
       },
       "patterns": [
-        {
-          "include": "#global"
-        }
+        { "include": "#global" }
       ]
     },
     "variable-assign": {
       "begin": "=",
       "beginCaptures": {
-        "0": {
-          "name": "keyword.operator.assignment.squirrel"
-        }
+        "0": { "name": "keyword.operator.assignment.squirrel" }
       },
       "end": "(?=;|,)",
       "patterns": [
-        {
-          "include": "#block"
-        },
-        {
-          "include": "#block-contents"
-        }
+        { "include": "#block" },
+        { "include": "#block-contents" }
       ]
     },
     "variable-name-post": {
       "begin": "(?<=\\w)",
       "end": "(?=;)|(?==)",
       "patterns": [
-        {
-          "include": "#variable-accessors"
-        },
-        {
-          "include": "#block-contents"
-        }
+        { "include": "#variable-accessors" },
+        { "include": "#block-contents" }
       ]
     },
+
     "modifiers": {
       "patterns": [
         {
-          "match": "\\b(class|enum|struct|typedef)\\s+([_A-z0-9]*)\\b",
+          "match": "\\b(class|enum|struct|typedef)\\s+([_A-Za-z][\\w]*)\\b",
           "captures": {
-            "0": {
-              "name": "storage.type.class.squirrel"
-            },
-            "2": {
-              "name": "entity.name.type"
-            }
+            "1": { "name": "storage.type.squirrel" },
+            "2": { "name": "entity.name.type.squirrel" }
           }
         },
         {
@@ -777,164 +816,124 @@
         },
         {
           "match": "^\\s*(::)",
-          "name": "storage.modifier.global"
+          "name": "storage.modifier.global.squirrel"
+        },
+        {
+          "match": "\\b(untyped|globalize_all_functions)\\b",
+          "name": "storage.modifier.special.squirrel"
         }
       ]
     },
+
     "for-loop": {
       "patterns": [
         {
-          "begin": "\\b(for)\\b[\\s]*(\\()",
+          "begin": "\\b(for)\\b\\s*(\\()",
           "beginCaptures": {
-            "1": {
-              "name": "keyword.control.flow-control.squirrel"
-            },
-            "2": {
-              "name": "meta.brace.round.squirrel"
-            }
+            "1": { "name": "keyword.control.loop.squirrel" },
+            "2": { "name": "meta.brace.round.squirrel" }
           },
           "end": "(\\))",
           "endCaptures": {
-            "1": {
-              "name": "meta.brace.round.squirrel"
-            }
+            "1": { "name": "meta.brace.round.squirrel" }
           },
           "patterns": [
-            {
-              "include": "#block"
-            },
-            {
-              "include": "#block-contents"
-            }
+            { "include": "#block" },
+            { "include": "#block-contents" }
           ]
         },
         {
-          "begin": "\\b(foreach)\\b[\\s]*(\\()",
+          "begin": "\\b(foreach)\\b\\s*(\\()",
           "beginCaptures": {
-            "1": {
-              "name": "keyword.control.flow-control.squirrel"
-            },
-            "2": {
-              "name": "meta.brace.round.squirrel"
-            }
+            "1": { "name": "keyword.control.loop.squirrel" },
+            "2": { "name": "meta.brace.round.squirrel" }
           },
           "end": "(\\))",
           "endCaptures": {
-            "1": {
-              "name": "meta.brace.round.squirrel"
-            }
+            "1": { "name": "meta.brace.round.squirrel" }
           },
           "patterns": [
             {
               "match": "\\b(in)\\b",
-              "name": "keyword.other.in.squirrel"
+              "name": "keyword.operator.iterator.squirrel"
             },
-            {
-              "include": "#block"
-            },
-            {
-              "include": "#block-contents"
-            }
+            { "include": "#block" },
+            { "include": "#block-contents" }
+          ]
+        },
+        {
+          "begin": "\\b(while)\\b\\s*(\\()",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.loop.squirrel" },
+            "2": { "name": "meta.brace.round.squirrel" }
+          },
+          "end": "(\\))",
+          "endCaptures": {
+            "1": { "name": "meta.brace.round.squirrel" }
+          },
+          "patterns": [
+            { "include": "#block-contents" }
           ]
         }
       ]
     },
+
     "keywords": {
       "patterns": [
         {
-          "begin": "(?<=if|while|for|foreach|)\\s*(\\()",
+          "begin": "(?<=if|while)\\s*(\\()",
           "beginCaptures": {
-            "2": {
-              "name": "meta.brace.round.squirrel"
-            }
+            "1": { "name": "meta.brace.round.squirrel" }
           },
           "end": "\\)",
           "endCaptures": {
-            "0": {
-              "name": "meta.brace.round.squirrel"
-            }
+            "0": { "name": "meta.brace.round.squirrel" }
           },
           "patterns": [
-            {
-              "include": "#block-contents"
-            }
+            { "include": "#block-contents" }
           ]
         },
         {
           "begin": "(?<=catch)\\s*(\\()",
           "beginCaptures": {
-            "2": {
-              "name": "meta.brace.round.squirrel"
-            }
+            "1": { "name": "meta.brace.round.squirrel" }
           },
           "end": "\\)",
           "endCaptures": {
-            "0": {
-              "name": "meta.brace.round.squirrel"
-            }
+            "0": { "name": "meta.brace.round.squirrel" }
           },
           "patterns": [
-            {
-              "include": "#block-contents"
-            }
+            { "include": "#block-contents" }
           ]
         },
         {
           "match": "\\b(try|catch|throw)\\b",
-          "name": "keyword.control.catch-exception.squirrel"
+          "name": "keyword.control.exception.squirrel"
         },
         {
           "begin": "\\b(case|default)\\b",
           "beginCaptures": {
-            "1": {
-              "name": "keyword.control.flow-control.squirrel"
-            }
+            "1": { "name": "keyword.control.switch.squirrel" }
           },
           "end": ":|$",
           "patterns": [
-            {
-              "include": "#global"
-            },
-            {
-              "include": "#metadata"
-            },
-            {
-              "include": "#array"
-            },
-            {
-              "include": "#constants"
-            },
-            {
-              "include": "#strings"
-            },
-            {
-              "match": "\\(",
-              "name": "meta.brace.round.squirrel"
-            },
-            {
-              "match": "\\)",
-              "name": "meta.brace.round.squirrel"
-            },
-            {
-              "include": "#operator-assignment"
-            },
-            {
-              "include": "#punctuation-comma"
-            },
-            {
-              "include": "#keywords"
-            },
-            {
-              "include": "#method-call"
-            },
-            {
-              "include": "#identifiers"
-            }
+            { "include": "#global" },
+            { "include": "#array" },
+            { "include": "#constants" },
+            { "include": "#strings" },
+            { "include": "#operators" },
+            { "include": "#punctuation-comma" },
+            { "include": "#method-call" },
+            { "include": "#identifiers" }
           ]
         },
         {
-          "match": "\\b(if|else|while|do|switch|case|break|for|foreach|return|yield|continue|resume|default|untyped|unreachable|globalize_all_functions)\\b",
-          "name": "keyword.control.flow-control.squirrel"
+          "match": "\\b(if|else|switch|break|return|yield|continue|resume|unreachable)\\b",
+          "name": "keyword.control.flow.squirrel"
+        },
+        {
+          "match": "\\b(while|do|for|foreach)\\b",
+          "name": "keyword.control.loop.squirrel"
         },
         {
           "match": "\\b(base|this)\\b",
@@ -942,106 +941,103 @@
         },
         {
           "match": "\\bconstructor\\b",
-          "name": "keyword.operator.new.squirrel"
+          "name": "keyword.other.constructor.squirrel"
         },
         {
-          "match": "\\b(delete|clone)\\b",
-          "name": "keyword.operator.new.squirrel"
+          "match": "\\b(delete|clone|rawget|rawset|rawdelete)\\b",
+          "name": "keyword.operator.other.squirrel"
         },
         {
-          "match": "\\b(expect|thread|wait|waitthread)\\b",
-          "name": "keyword.control.flow-control"
+          "match": "\\b(expect|thread|wait|waitthread|waitthreadsolo)\\b",
+          "name": "keyword.control.thread.squirrel"
         },
         {
           "match": "\\b(void|ornull)\\b",
-          "name": "storage.type.variable.squirrel"
+          "name": "storage.type.modifier.squirrel"
         },
         {
           "match": "\\b(var|const|typedef|functionref)\\b",
-          "name": "storage.type.variable.squirrel"
+          "name": "storage.type.squirrel"
         },
         {
           "match": "\\b(int|string|float|vector|table|array|entity|bool|asset)\\b",
-          "name": "storage.type.variable.squirrel"
+          "name": "storage.type.primitive.squirrel"
         },
         {
           "match": "\\b(in|not\\s+in|instanceof|typeof)\\b",
-          "name": "keyword.operator.logical.squirrel"
+          "name": "keyword.operator.expression.squirrel"
         },
         {
-          "match": "\\b(__LINE__|__FILE__)\\b",
-          "name": "keyword.other.squirrel"
+          "match": "\\b(__LINE__|__FILE__|FUNC_NAME)\\b",
+          "name": "constant.language.special.squirrel"
         },
         {
-          "include": "#modifiers"
+          "match": "\\b(RegisterSignal|EndSignal|Signal|WaitSignal)\\b",
+          "name": "support.function.signal.squirrel"
         },
         {
-          "include": "#modifiers-inheritance"
-        }
+          "match": "\\b(PrecacheModel|PrecacheWeapon|PrecacheParticleSystem)\\b",
+          "name": "support.function.precache.squirrel"
+        },
+        {
+          "match": "\\b(Assert|mAssert|AssertParameters)\\b",
+          "name": "support.function.assert.squirrel"
+        },
+        {
+          "match": "\\b(IsValid|IsAlive|IsPlayer)\\b",
+          "name": "support.function.validation.squirrel"
+        },
+        { "include": "#modifiers" },
+        { "include": "#modifiers-inheritance" }
       ]
     },
+
     "punctuation-braces": {
       "begin": "\\(",
       "beginCaptures": {
-        "0": {
-          "name": "meta.brace.round.squirrel"
-        }
+        "0": { "name": "meta.brace.round.squirrel" }
       },
       "end": "\\)",
       "endCaptures": {
-        "0": {
-          "name": "meta.brace.round.squirrel"
-        }
+        "0": { "name": "meta.brace.round.squirrel" }
       },
       "patterns": [
-        {
-          "include": "#keywords"
-        },
+        { "include": "#keywords" },
         {
           "match": "\\bis\\b(?!\\()",
-          "name": "keyword.other.squirrel"
+          "name": "keyword.operator.is.squirrel"
         },
-        {
-          "include": "#block"
-        },
-        {
-          "include": "#block-contents"
-        }
+        { "include": "#block" },
+        { "include": "#block-contents" }
       ]
     },
+
     "modifiers-inheritance": {
       "match": "\\b(extends)\\b",
-      "name": "storage.modifier.squirrel"
+      "name": "storage.modifier.extends.squirrel"
     },
+
     "method-call": {
       "begin": "\\b([_A-Za-z][\\w]*)\\s*(\\()",
       "beginCaptures": {
-        "1": {
-          "name": "entity.name.function.squirrel"
-        },
-        "2": {
-          "name": "meta.brace.round.squirrel"
-        }
+        "1": { "name": "entity.name.function.squirrel" },
+        "2": { "name": "meta.brace.round.squirrel" }
       },
       "end": "(\\))",
       "endCaptures": {
-        "1": {
-          "name": "meta.brace.round.squirrel"
-        }
+        "1": { "name": "meta.brace.round.squirrel" }
       },
       "patterns": [
-        {
-          "include": "#block"
-        },
-        {
-          "include": "#block-contents"
-        }
+        { "include": "#block" },
+        { "include": "#block-contents" }
       ]
     },
+
     "operator-assignment": {
       "match": "(=)",
       "name": "keyword.operator.assignment.squirrel"
     },
+
     "operators": {
       "patterns": [
         {
@@ -1058,7 +1054,7 @@
         },
         {
           "match": "(!)",
-          "name": "keyword.operator.logical.squirrel"
+          "name": "keyword.operator.logical.not.squirrel"
         },
         {
           "match": "(\\-\\-|\\+\\+)",
@@ -1069,34 +1065,34 @@
           "name": "keyword.operator.arithmetic.squirrel"
         },
         {
-          "match": "(\\+=|\\-=|\\*=|/=|%=)",
-          "name": "keyword.operator.assignment.squirrel"
+          "match": "(\\+=|\\-=|\\*=|/=|%=|<-)",
+          "name": "keyword.operator.assignment.compound.squirrel"
         },
         {
           "match": "\\?\\?",
-          "name": "keyword.operator.null-operator.squirrel"
+          "name": "keyword.operator.null-coalescing.squirrel"
         },
         {
-          "begin": "\\?",
+          "begin": "\\?(?!\\?)",
           "beginCaptures": {
-            "0": {
-              "name": "keyword.operator.ternary.squirrel"
-            }
+            "0": { "name": "keyword.operator.ternary.squirrel" }
           },
           "end": ":",
           "endCaptures": {
-            "0": {
-              "name": "keyword.operator.ternary.squirrel"
-            }
+            "0": { "name": "keyword.operator.ternary.squirrel" }
           },
           "patterns": [
-            {
-              "include": "#block-contents"
-            }
+            { "include": "#block-contents" }
           ]
         }
       ]
     },
+
+    "operator-optional": {
+      "match": "(\\?)(?!\\s)",
+      "name": "keyword.operator.optional.squirrel"
+    },
+
     "punctuation-comma": {
       "match": ",",
       "name": "punctuation.separator.comma.squirrel"
@@ -1109,13 +1105,10 @@
       "match": ";",
       "name": "punctuation.terminator.squirrel"
     },
+
     "constant-name": {
-      "match": "\\b([_A-Z][_A-Z0-9]*)\\b",
-      "name": "variable.other.squirrel"
-    },
-    "identifier-name": {
-      "match": "",
-      "name": "variable.other.squirrel"
+      "match": "\\b([_A-Z][_A-Z0-9]+)\\b",
+      "name": "constant.other.caps.squirrel"
     },
     "f-identifier": {
       "match": "\\b([_A-Za-z][\\w]*)\\b",

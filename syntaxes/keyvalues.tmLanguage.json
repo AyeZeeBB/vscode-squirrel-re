@@ -1,0 +1,211 @@
+{
+  "name": "Respawn KeyValues",
+  "scopeName": "source.keyvalues",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#base-include" },
+    { "include": "#platform-conditional" },
+    { "include": "#block" },
+    { "include": "#key-value" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "match": "//.*$",
+          "name": "comment.line.double-slash.keyvalues"
+        },
+        {
+          "begin": "/\\*",
+          "end": "\\*/",
+          "name": "comment.block.keyvalues"
+        }
+      ]
+    },
+
+    "base-include": {
+      "match": "^\\s*(#base|#include)\\s+(\"[^\"]+\")",
+      "captures": {
+        "1": { "name": "keyword.control.import.keyvalues" },
+        "2": { "name": "string.quoted.double.include.keyvalues" }
+      }
+    },
+
+    "platform-conditional": {
+      "match": "\\[(\\$|\\!\\$)?(PC|GAMECONSOLE|X360|PS3|POSIX|WIN32|OSX|LINUX|DURANGO|PS4)\\]",
+      "name": "keyword.control.conditional.keyvalues"
+    },
+
+    "block": {
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.block.begin.keyvalues" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.block.end.keyvalues" }
+      },
+      "name": "meta.block.keyvalues",
+      "patterns": [
+        { "include": "#comments" },
+        { "include": "#platform-conditional" },
+        { "include": "#block" },
+        { "include": "#key-value" },
+        { "include": "#block-name" }
+      ]
+    },
+
+    "block-name": {
+      "match": "^\\s*(\"[^\"]+\"|[A-Za-z_][A-Za-z0-9_]*)\\s*(?=\\{|$)",
+      "captures": {
+        "1": { "name": "entity.name.section.keyvalues" }
+      }
+    },
+
+    "key-value": {
+      "patterns": [
+        {
+          "comment": "Quoted key with quoted value",
+          "match": "^\\s*(\"[^\"]+\")\\s+(\"[^\"]*\")",
+          "captures": {
+            "1": { "name": "support.type.property-name.keyvalues" },
+            "2": {
+              "patterns": [
+                { "include": "#string-value" }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Unquoted key with quoted value",
+          "match": "^\\s*([A-Za-z_][A-Za-z0-9_]*)\\s+(\"[^\"]*\")",
+          "captures": {
+            "1": { "name": "support.type.property-name.keyvalues" },
+            "2": {
+              "patterns": [
+                { "include": "#string-value" }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Quoted key with unquoted value",
+          "match": "^\\s*(\"[^\"]+\")\\s+([^\"\\s{][^\\s{]*)",
+          "captures": {
+            "1": { "name": "support.type.property-name.keyvalues" },
+            "2": {
+              "patterns": [
+                { "include": "#unquoted-value" }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Unquoted key with unquoted value",
+          "match": "^\\s*([A-Za-z_][A-Za-z0-9_]*)\\s+([^\"\\s{][^\\s{]*)",
+          "captures": {
+            "1": { "name": "support.type.property-name.keyvalues" },
+            "2": {
+              "patterns": [
+                { "include": "#unquoted-value" }
+              ]
+            }
+          }
+        },
+        {
+          "comment": "Key-only line (block start)",
+          "match": "^\\s*(\"[^\"]+\"|[A-Za-z_][A-Za-z0-9_]*)\\s*$",
+          "captures": {
+            "1": { "name": "entity.name.section.keyvalues" }
+          }
+        }
+      ]
+    },
+
+    "string-value": {
+      "patterns": [
+        {
+          "comment": "Color values like '255 255 255 128'",
+          "match": "\"(\\d+\\s+\\d+\\s+\\d+(?:\\s+\\d+)?)\"",
+          "name": "constant.other.color.keyvalues"
+        },
+        {
+          "comment": "Percentage values",
+          "match": "\"(%\\d+)\"",
+          "name": "constant.numeric.percentage.keyvalues"
+        },
+        {
+          "comment": "Special format values like f0",
+          "match": "\"(f\\d+)\"",
+          "name": "constant.numeric.format.keyvalues"
+        },
+        {
+          "comment": "Numeric values",
+          "match": "\"(-?\\d+\\.?\\d*)\"",
+          "name": "constant.numeric.keyvalues"
+        },
+        {
+          "comment": "Boolean values",
+          "match": "\"([01])\"",
+          "name": "constant.language.boolean.keyvalues"
+        },
+        {
+          "comment": "Flag combinations",
+          "match": "\"([A-Z_]+(?:\\s*\\|\\s*[A-Z_]+)+)\"",
+          "name": "constant.other.flags.keyvalues"
+        },
+        {
+          "comment": "Localization strings",
+          "match": "\"(#[A-Za-z_][A-Za-z0-9_]*)\"",
+          "name": "string.interpolated.localization.keyvalues"
+        },
+        {
+          "comment": "Path/asset values",
+          "match": "\"([^\"]*\\.(rui|rpak|res|menu|vmt|vtf|mdl|rmdl|png|jpg|wav|mp3))\"",
+          "name": "string.quoted.double.path.keyvalues"
+        },
+        {
+          "comment": "Regular string",
+          "match": "\"[^\"]*\"",
+          "name": "string.quoted.double.keyvalues"
+        }
+      ]
+    },
+
+    "unquoted-value": {
+      "patterns": [
+        {
+          "comment": "Numeric values",
+          "match": "-?\\d+\\.?\\d*",
+          "name": "constant.numeric.keyvalues"
+        },
+        {
+          "comment": "Boolean 0/1",
+          "match": "\\b[01]\\b",
+          "name": "constant.language.boolean.keyvalues"
+        },
+        {
+          "comment": "Percentage values",
+          "match": "%\\d+",
+          "name": "constant.numeric.percentage.keyvalues"
+        },
+        {
+          "comment": "Special format f0",
+          "match": "f\\d+",
+          "name": "constant.numeric.format.keyvalues"
+        },
+        {
+          "comment": "Flag identifiers",
+          "match": "[A-Z_][A-Z0-9_]*",
+          "name": "constant.other.flag.keyvalues"
+        },
+        {
+          "comment": "Other identifiers",
+          "match": "[a-zA-Z_][a-zA-Z0-9_]*",
+          "name": "variable.other.keyvalues"
+        }
+      ]
+    }
+  }
+}
+

@@ -1,49 +1,142 @@
 {
-  "name": "vscode-squirrel-re",
-  "displayName": "squirrel_re",
-  "description": "squirrel_re language support",
-  "version": "1.0.0",
-  "publisher": "r-ex",
+  "name": "respawn-squirrel-extension",
+  "displayName": "Squirrel (Respawn)",
+  "description": "Full language support for Respawn Entertainment games (Apex Legends, Titanfall). Includes Squirrel scripts (.nut, .gnut), weapon/item configs (.txt), UI files (.res, .menu), and RSON data files.",
+  "version": "2.1.0",
+  "publisher": "zee",
   "icon": "acorn.png",
   "license": "MIT",
   "engines": {
-    "vscode": "^1.43.0"
+    "vscode": "^1.60.0"
   },
   "categories": [
-    "Programming Languages"
+    "Programming Languages",
+    "Snippets",
+    "Formatters"
   ],
   "keywords": [
     "squirrel",
-    "nut"
-  ],
-  "activationEvents": [
-    "*"
+    "nut",
+    "gnut",
+    "rson",
+    "respawn",
+    "apex",
+    "titanfall",
+    "r5reloaded",
+    "vscript",
+    "source engine",
+    "keyvalues",
+    "vdf",
+    "weapon",
+    "res",
+    "menu"
   ],
   "contributes": {
     "languages": [
-        {
-            "id": "squirrel",
-            "aliases": [
-                "Squirrel",
-                "squirrel"
-            ],
-            "extensions": [
-                ".nut",
-                ".gnut"
-            ],
-            "configuration": "./language-configuration.json"
+      {
+        "id": "squirrel",
+        "aliases": [
+          "Squirrel",
+          "squirrel",
+          "Squirrel (Respawn)",
+          "VScript"
+        ],
+        "extensions": [
+          ".nut",
+          ".gnut"
+        ],
+        "configuration": "./syntaxes/squirrel.language-configuration.json",
+        "icon": {
+          "light": "./acorn.png",
+          "dark": "./acorn.png"
         }
+      },
+      {
+        "id": "rson",
+        "aliases": [
+          "RSON",
+          "rson",
+          "Respawn JSON"
+        ],
+        "extensions": [
+          ".rson"
+        ],
+        "configuration": "./syntaxes/rson.language-configuration.json"
+      },
+      {
+        "id": "respawn-keyvalues",
+        "aliases": [
+          "Respawn KeyValues",
+          "KeyValues",
+          "VDF",
+          "Weapon Config",
+          "UI Resource"
+        ],
+        "extensions": [
+          ".res",
+          ".menu"
+        ],
+        "filenames": [],
+        "filenamePatterns": [
+          "**/weapons/**/*.txt",
+          "**/aisettings/**/*.txt",
+          "**/turrets/**/*.txt",
+          "**/damage/**/*.txt"
+        ],
+        "configuration": "./syntaxes/keyvalues.language-configuration.json"
+      }
     ],
     "grammars": [
-        {
-            "language": "squirrel",
-            "scopeName": "rspn.squirrel",
-            "path": "./syntaxes/squirrel.tmLanguage.json"
-        }
-    ]
+      {
+        "language": "squirrel",
+        "scopeName": "rspn.squirrel",
+        "path": "./syntaxes/squirrel.tmLanguage.json"
+      },
+      {
+        "language": "rson",
+        "scopeName": "source.rson",
+        "path": "./syntaxes/rson.tmLanguage.json"
+      },
+      {
+        "language": "respawn-keyvalues",
+        "scopeName": "source.keyvalues",
+        "path": "./syntaxes/keyvalues.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "squirrel",
+        "path": "./snippets/squirrel.json"
+      },
+      {
+        "language": "respawn-keyvalues",
+        "path": "./snippets/keyvalues.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[squirrel]": {
+        "editor.tabSize": 4,
+        "editor.insertSpaces": false,
+        "editor.detectIndentation": true,
+        "editor.bracketPairColorization.enabled": true
+      },
+      "[rson]": {
+        "editor.tabSize": 4,
+        "editor.insertSpaces": false
+      },
+      "[respawn-keyvalues]": {
+        "editor.tabSize": 4,
+        "editor.insertSpaces": false,
+        "editor.bracketPairColorization.enabled": true
+      }
+    }
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/r-ex/vscode-squirrel-re.git"
-  }
+    "url": "https://github.com/AyeZeeBB/vscode-squirrel-re.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AyeZeeBB/vscode-squirrel-re/issues"
+  },
+  "homepage": "https://github.com/AyeZeeBB/vscode-squirrel-re#readme"
 }

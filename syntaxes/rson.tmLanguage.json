@@ -1,0 +1,145 @@
+{
+  "name": "RSON",
+  "scopeName": "source.rson",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#keywords" },
+    { "include": "#directives" },
+    { "include": "#properties" },
+    { "include": "#arrays" },
+    { "include": "#objects" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "begin": "//",
+          "end": "$",
+          "name": "comment.line.double-slash.rson"
+        },
+        {
+          "begin": "/\\*",
+          "end": "\\*/",
+          "name": "comment.block.rson"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "begin": "\"",
+          "end": "\"",
+          "name": "string.quoted.double.rson",
+          "patterns": [
+            {
+              "match": "\\\\.",
+              "name": "constant.character.escape.rson"
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "match": "-?\\b\\d+\\.\\d+([eE][+-]?\\d+)?\\b",
+          "name": "constant.numeric.float.rson"
+        },
+        {
+          "match": "-?\\b\\d+\\b",
+          "name": "constant.numeric.integer.rson"
+        },
+        {
+          "match": "\\b0x[0-9a-fA-F]+\\b",
+          "name": "constant.numeric.hex.rson"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "match": "\\b(true|false)\\b",
+          "name": "constant.language.boolean.rson"
+        },
+        {
+          "match": "\\bnull\\b",
+          "name": "constant.language.null.rson"
+        },
+        {
+          "match": "\\b(When|Scripts|If|Else)\\b",
+          "name": "keyword.control.rson"
+        },
+        {
+          "match": "\\b(SERVER|CLIENT|UI|SP|MP|DEV|DEVELOPER|CONSOLE_PROG|DURANGO_PROG|PS4_PROG|PC_PROG|LOBBY)\\b",
+          "name": "constant.language.platform.rson"
+        }
+      ]
+    },
+    "directives": {
+      "patterns": [
+        {
+          "match": "\\$[a-zA-Z_][a-zA-Z0-9_]*",
+          "name": "variable.other.directive.rson"
+        }
+      ]
+    },
+    "properties": {
+      "patterns": [
+        {
+          "match": "([a-zA-Z_][a-zA-Z0-9_]*)\\s*:",
+          "captures": {
+            "1": { "name": "support.type.property-name.rson" }
+          }
+        },
+        {
+          "match": "\\b([a-zA-Z_][a-zA-Z0-9_./]*)\\b(?=\\s*(?:\\[|\\{|$))",
+          "name": "entity.name.tag.rson"
+        }
+      ]
+    },
+    "arrays": {
+      "begin": "\\[",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.array.begin.rson" }
+      },
+      "end": "\\]",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.array.end.rson" }
+      },
+      "patterns": [
+        { "include": "#comments" },
+        { "include": "#strings" },
+        { "include": "#numbers" },
+        { "include": "#keywords" },
+        { "include": "#arrays" },
+        { "include": "#objects" },
+        {
+          "match": "[a-zA-Z_][a-zA-Z0-9_./]*",
+          "name": "string.unquoted.rson"
+        }
+      ]
+    },
+    "objects": {
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.object.begin.rson" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.object.end.rson" }
+      },
+      "patterns": [
+        { "include": "#comments" },
+        { "include": "#strings" },
+        { "include": "#numbers" },
+        { "include": "#keywords" },
+        { "include": "#properties" },
+        { "include": "#arrays" },
+        { "include": "#objects" }
+      ]
+    }
+  }
+}
+

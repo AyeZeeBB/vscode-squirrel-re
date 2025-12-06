@@ -1,235 +1,675 @@
 {
-  "local": {
+  "// ===== FUNCTION DECLARATIONS =====": {},
+
+  "Void Function": {
+    "prefix": ["vf", "void function"],
+    "body": [
+      "void function ${1:FunctionName}(${2:})",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "Declare a void function with return type"
+  },
+
+  "Int Function": {
+    "prefix": ["if", "int function"],
+    "body": [
+      "int function ${1:FunctionName}(${2:})",
+      "{",
+      "\t$0",
+      "\treturn ${3:0}",
+      "}"
+    ],
+    "description": "Declare an int function with return type"
+  },
+
+  "Bool Function": {
+    "prefix": ["bf", "bool function"],
+    "body": [
+      "bool function ${1:FunctionName}(${2:})",
+      "{",
+      "\t$0",
+      "\treturn ${3:false}",
+      "}"
+    ],
+    "description": "Declare a bool function with return type"
+  },
+
+  "String Function": {
+    "prefix": ["sf", "string function"],
+    "body": [
+      "string function ${1:FunctionName}(${2:})",
+      "{",
+      "\t$0",
+      "\treturn ${3:\"\"}",
+      "}"
+    ],
+    "description": "Declare a string function with return type"
+  },
+
+  "Float Function": {
+    "prefix": ["ff", "float function"],
+    "body": [
+      "float function ${1:FunctionName}(${2:})",
+      "{",
+      "\t$0",
+      "\treturn ${3:0.0}",
+      "}"
+    ],
+    "description": "Declare a float function with return type"
+  },
+
+  "Entity Function": {
+    "prefix": ["ef", "entity function"],
+    "body": [
+      "entity function ${1:FunctionName}(${2:})",
+      "{",
+      "\t$0",
+      "\treturn ${3:null}",
+      "}"
+    ],
+    "description": "Declare an entity function with return type"
+  },
+
+  "Vector Function": {
+    "prefix": ["vecf", "vector function"],
+    "body": [
+      "vector function ${1:FunctionName}(${2:})",
+      "{",
+      "\t$0",
+      "\treturn ${3:<0, 0, 0>}",
+      "}"
+    ],
+    "description": "Declare a vector function with return type"
+  },
+
+  "Array Function": {
+    "prefix": ["af", "array function"],
+    "body": [
+      "array<${1:type}> function ${2:FunctionName}(${3:})",
+      "{",
+      "\tarray<${1:type}> result = []",
+      "\t$0",
+      "\treturn result",
+      "}"
+    ],
+    "description": "Declare an array function with return type"
+  },
+
+  "Untyped Function": {
+    "prefix": "function",
+    "body": [
+      "function ${1:FunctionName}(${2:})",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "Declare an untyped function"
+  },
+
+  "// ===== CONTROL STRUCTURES =====": {},
+
+  "For Loop": {
+    "prefix": "for",
+    "body": [
+      "for (int ${1:i} = ${2:0}; ${1:i} < ${3:count}; ${1:i}++)",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "For loop with int iterator"
+  },
+
+  "Foreach Loop": {
+    "prefix": "foreach",
+    "body": [
+      "foreach (${1:item} in ${2:collection})",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "Foreach loop"
+  },
+
+  "Foreach with Key": {
+    "prefix": ["foreachk", "foreach key"],
+    "body": [
+      "foreach (${1:key}, ${2:value} in ${3:collection})",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "Foreach loop with key and value"
+  },
+
+  "While Loop": {
+    "prefix": "while",
+    "body": [
+      "while (${1:condition})",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "While loop"
+  },
+
+  "If Statement": {
+    "prefix": "if",
+    "body": [
+      "if (${1:condition})",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "If statement"
+  },
+
+  "If Else": {
+    "prefix": "ife",
+    "body": [
+      "if (${1:condition})",
+      "{",
+      "\t$2",
+      "}",
+      "else",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "If-else statement"
+  },
+
+  "Switch": {
+    "prefix": "switch",
+    "body": [
+      "switch (${1:value})",
+      "{",
+      "\tcase ${2:case1}:",
+      "\t\t$0",
+      "\t\tbreak",
+      "",
+      "\tdefault:",
+      "\t\tbreak",
+      "}"
+    ],
+    "description": "Switch statement"
+  },
+
+  "Try Catch": {
+    "prefix": "try",
+    "body": [
+      "try",
+      "{",
+      "\t$0",
+      "}",
+      "catch (${1:exception})",
+      "{",
+      "\t$2",
+      "}"
+    ],
+    "description": "Try-catch block"
+  },
+
+  "// ===== STRUCTURES =====": {},
+
+  "Struct": {
+    "prefix": "struct",
+    "body": [
+      "struct ${1:StructName}",
+      "{",
+      "\t${2:int} ${3:field}$0",
+      "}"
+    ],
+    "description": "Struct definition"
+  },
+
+  "Global Struct": {
+    "prefix": ["gstruct", "global struct"],
+    "body": [
+      "global struct ${1:StructName}",
+      "{",
+      "\t${2:int} ${3:field}$0",
+      "}"
+    ],
+    "description": "Global struct definition"
+  },
+
+  "File Struct": {
+    "prefix": ["filestruct", "file struct"],
+    "body": [
+      "struct",
+      "{",
+      "\t$0",
+      "} file"
+    ],
+    "description": "Anonymous file-scoped struct"
+  },
+
+  "Enum": {
+    "prefix": "enum",
+    "body": [
+      "enum ${1:EnumName}",
+      "{",
+      "\t${2:VALUE},$0",
+      "}"
+    ],
+    "description": "Enum definition"
+  },
+
+  "Global Enum": {
+    "prefix": ["genum", "global enum"],
+    "body": [
+      "global enum ${1:eEnumName}",
+      "{",
+      "\t${2:VALUE},$0",
+      "}"
+    ],
+    "description": "Global enum definition"
+  },
+
+  "Class": {
+    "prefix": "class",
+    "body": [
+      "class ${1:ClassName}",
+      "{",
+      "\tconstructor(${2:})",
+      "\t{",
+      "\t\t$0",
+      "\t}",
+      "}"
+    ],
+    "description": "Class definition with constructor"
+  },
+
+  "// ===== VARIABLES =====": {},
+
+  "Local Variable": {
     "prefix": "local",
     "body": "local ${1:name} = ${0}",
     "description": "Declaration of local variable"
   },
 
-  "require": {
-    "prefix": ["req", "require"],
-    "body": "require(\"${0:path}.nut\")",
-    "description": "Require external module"
+  "Array Declaration": {
+    "prefix": ["arr", "array"],
+    "body": "array<${1:type}> ${2:name} = [$0]",
+    "description": "Typed array declaration"
   },
 
-  "function": {
-    "prefix": "function",
-    "body": "function${1}(${2:args}) {\n\t${0}\n}",
-    "description": "Function declaration"
+  "Table Declaration": {
+    "prefix": ["tbl", "table"],
+    "body": "table<${1:keyType}, ${2:valueType}> ${3:name} = {$0}",
+    "description": "Typed table declaration"
   },
 
-  "todo": {
+  "Global Const": {
+    "prefix": ["gconst", "global const"],
+    "body": "global const ${1:TYPE} ${2:CONSTANT_NAME} = ${0}",
+    "description": "Global constant declaration"
+  },
+
+  "// ===== THREADING =====": {},
+
+  "Thread": {
+    "prefix": "thread",
+    "body": "thread ${1:FunctionName}($0)",
+    "description": "Thread a function call"
+  },
+
+  "Wait": {
+    "prefix": "wait",
+    "body": "wait ${0:0.0}",
+    "description": "Wait for time in seconds"
+  },
+
+  "WaitFrame": {
+    "prefix": "waitframe",
+    "body": "WaitFrame()",
+    "description": "Wait one frame"
+  },
+
+  "WaitThread": {
+    "prefix": "waitthread",
+    "body": "waitthread ${1:FunctionName}($0)",
+    "description": "Wait for threaded function to complete"
+  },
+
+  "// ===== SIGNALS =====": {},
+
+  "RegisterSignal": {
+    "prefix": ["regsig", "RegisterSignal"],
+    "body": "RegisterSignal(\"${1:SignalName}\")",
+    "description": "Register a signal"
+  },
+
+  "EndSignal": {
+    "prefix": ["endsig", "EndSignal"],
+    "body": "EndSignal(${1:ent}, \"${2:SignalName}\")",
+    "description": "End thread on signal"
+  },
+
+  "WaitSignal": {
+    "prefix": ["waitsig", "WaitSignal"],
+    "body": "WaitSignal(${1:ent}, \"${2:SignalName}\")",
+    "description": "Wait for signal"
+  },
+
+  "Signal": {
+    "prefix": "Signal",
+    "body": "Signal(${1:ent}, \"${2:SignalName}\")",
+    "description": "Send signal"
+  },
+
+  "OnThreadEnd": {
+    "prefix": "OnThreadEnd",
+    "body": [
+      "OnThreadEnd(",
+      "\tfunction() : (${1:captures})",
+      "\t{",
+      "\t\t$0",
+      "\t}",
+      ")"
+    ],
+    "description": "OnThreadEnd callback"
+  },
+
+  "// ===== PREPROCESSOR =====": {},
+
+  "If Server": {
+    "prefix": ["#server", "ifdef server"],
+    "body": [
+      "#if SERVER",
+      "\t$0",
+      "#endif"
+    ],
+    "description": "Server-only code block"
+  },
+
+  "If Client": {
+    "prefix": ["#client", "ifdef client"],
+    "body": [
+      "#if CLIENT",
+      "\t$0",
+      "#endif"
+    ],
+    "description": "Client-only code block"
+  },
+
+  "If UI": {
+    "prefix": ["#ui", "ifdef ui"],
+    "body": [
+      "#if UI",
+      "\t$0",
+      "#endif"
+    ],
+    "description": "UI-only code block"
+  },
+
+  "If Server/Client": {
+    "prefix": ["#sc", "ifdef server client"],
+    "body": [
+      "#if SERVER || CLIENT",
+      "\t$0",
+      "#endif"
+    ],
+    "description": "Server or Client code block"
+  },
+
+  "If All VMs": {
+    "prefix": ["#all", "ifdef all"],
+    "body": [
+      "#if SERVER || CLIENT || UI",
+      "\t$0",
+      "#endif"
+    ],
+    "description": "All VMs code block"
+  },
+
+  "If Developer": {
+    "prefix": ["#dev", "ifdef developer"],
+    "body": [
+      "#if DEVELOPER",
+      "\t$0",
+      "#endif"
+    ],
+    "description": "Developer-only code block"
+  },
+
+  "Document": {
+    "prefix": "#document",
+    "body": "#document(\"${1:FunctionName}\", \"${2:Description}\")",
+    "description": "Document a function"
+  },
+
+  "// ===== COMMON PATTERNS =====": {},
+
+  "Init Function": {
+    "prefix": "init",
+    "body": [
+      "void function ${1:ModuleName}_Init()",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "Init function pattern"
+  },
+
+  "Shared Init Function": {
+    "prefix": "shinit",
+    "body": [
+      "void function Sh${1:ModuleName}_Init()",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "Shared init function pattern"
+  },
+
+  "Entity Check": {
+    "prefix": "isvalid",
+    "body": "if (!IsValid(${1:ent}))\n\treturn$0",
+    "description": "IsValid entity check with early return"
+  },
+
+  "Player Check": {
+    "prefix": "isplayer",
+    "body": "if (!IsValid(${1:player}) || !${1:player}.IsPlayer())\n\treturn$0",
+    "description": "Player validity check with early return"
+  },
+
+  "Assert": {
+    "prefix": "assert",
+    "body": "Assert(${1:condition}, \"${2:message}\")",
+    "description": "Assert with message"
+  },
+
+  "Lambda": {
+    "prefix": ["lambda", "@("],
+    "body": "@(${1:params}) ${0}",
+    "description": "Lambda expression"
+  },
+
+  "Lambda Block": {
+    "prefix": ["lambdab", "@(){"],
+    "body": [
+      "@(${1:params})",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "Lambda expression with block"
+  },
+
+  "Function Reference": {
+    "prefix": "funcref",
+    "body": "${1:void} functionref(${2:params}) ${3:name}",
+    "description": "Function reference type"
+  },
+
+  "// ===== VECTORS & ASSETS =====": {},
+
+  "Vector Zero": {
+    "prefix": ["vec0", "vector zero"],
+    "body": "<0, 0, 0>",
+    "description": "Zero vector"
+  },
+
+  "Vector": {
+    "prefix": "vec",
+    "body": "<${1:0}, ${2:0}, ${3:0}>",
+    "description": "Vector literal"
+  },
+
+  "Asset": {
+    "prefix": "$",
+    "body": "\\$\"${1:path}\"",
+    "description": "Asset literal"
+  },
+
+  "Precache Model": {
+    "prefix": "precache",
+    "body": "PrecacheModel(\\$\"${1:mdl/path.rmdl}\")",
+    "description": "Precache a model"
+  },
+
+  "// ===== PLAYER FUNCTIONS =====": {},
+
+  "Get Player Array": {
+    "prefix": "getplayers",
+    "body": "array<entity> ${1:players} = GetPlayerArray()",
+    "description": "Get array of all players"
+  },
+
+  "Foreach Player": {
+    "prefix": ["foreachplayer", "fep"],
+    "body": [
+      "foreach (entity player in GetPlayerArray())",
+      "{",
+      "\t$0",
+      "}"
+    ],
+    "description": "Iterate over all players"
+  },
+
+  "Get Local Player": {
+    "prefix": "localplayer",
+    "body": "entity ${1:player} = GetLocalClientPlayer()",
+    "description": "Get local client player"
+  },
+
+  "// ===== COMMENTS =====": {},
+
+  "TODO Comment": {
     "prefix": "todo",
-    "body": "$BLOCK_COMMENT_START TODO: ${0} $BLOCK_COMMENT_END",
-    "description": "To Do Comment"
+    "body": "// TODO: ${0}",
+    "description": "TODO comment"
   },
 
-  "fix": {
-    "prefix": "fix",
-    "body": "$BLOCK_COMMENT_START FIX ME: ${0} $BLOCK_COMMENT_END",
-    "description": "To Do Comment"
+  "FIXME Comment": {
+    "prefix": "fixme",
+    "body": "// FIXME: ${0}",
+    "description": "FIXME comment"
   },
 
-  "watchElemState": {
-    "prefix": "[watchElem, watchElemState]",
-    "body": "::watchElemState(@(sf){\n\t${0}\n}",
-    "description": "watchElemState"
+  "Header Comment": {
+    "prefix": "header",
+    "body": [
+      "//",
+      "// ${1:Description}",
+      "//"
+    ],
+    "description": "Section header comment"
   },
 
-  "for loop": {
-    "prefix": "for",
-    "body": "for(${1:local i = 0}, ${2:end}, ${3:i++}){\n\t${4: loop}\n}",
-    "description": "for loop"
+  "Block Comment": {
+    "prefix": "/*",
+    "body": [
+      "/*",
+      " * ${0}",
+      " */"
+    ],
+    "description": "Block comment"
   },
 
-  "foreach loop": {
-    "prefix": "foreach",
-    "body": "foreach(${1:key} in ${2:container}){\n\t${3: loop}\n}",
-    "description": "foreach loop"
+  "// ===== FILE TEMPLATES =====": {},
+
+  "Shared Script Template": {
+    "prefix": "template_shared",
+    "body": [
+      "untyped",
+      "",
+      "globalize_all_functions",
+      "",
+      "struct",
+      "{",
+      "\t$0",
+      "} file",
+      "",
+      "void function Sh${1:ModuleName}_Init()",
+      "{",
+      "\t",
+      "}"
+    ],
+    "description": "Template for a shared script file"
   },
 
-  "hpdx": {
-    "prefix": "hd",
-    "body": "::hdpx(${1:int})",
-    "description": "hdpx"
+  "Server Script Template": {
+    "prefix": "template_server",
+    "body": [
+      "untyped",
+      "",
+      "globalize_all_functions",
+      "",
+      "struct",
+      "{",
+      "\t$0",
+      "} file",
+      "",
+      "void function ${1:ModuleName}_Init()",
+      "{",
+      "\t",
+      "}"
+    ],
+    "description": "Template for a server script file"
   },
 
-  "hotkeys": {
-    "prefix": "hotkeys",
-    "body": "hotkeys = [[\"^J:${1:A}\", {description = ::loc(\"${2:text}\")}]]",
-    "description": "hotkeys"
+  "Client Script Template": {
+    "prefix": "template_client",
+    "body": [
+      "untyped",
+      "",
+      "globalize_all_functions",
+      "",
+      "struct",
+      "{",
+      "\t$0",
+      "} file",
+      "",
+      "void function Cl${1:ModuleName}_Init()",
+      "{",
+      "\t",
+      "}"
+    ],
+    "description": "Template for a client script file"
   },
 
-  "viewConst": {
-    "prefix": "viewConst",
-    "body": "require(\"enlisted/enlist/viewConst.nut\")",
-    "description": "viewConst"
+  "// ===== DEBUG =====": {},
+
+  "Print": {
+    "prefix": "print",
+    "body": "printt(${0})",
+    "description": "Print to console"
   },
 
-  "computed": {
-    "prefix": "computed",
-    "body": "::Computed(@() ${0})",
-    "description": "computed"
+  "Print Format": {
+    "prefix": "printf",
+    "body": "printt(format(\"${1:%s}\", ${2:value}))",
+    "description": "Formatted print"
   },
 
-  "kwarg": {
-    "prefix": "kwarg",
-    "body": "::kwarg(function(${1:args})){\n\t${0}\n}",
-    "description": "kwarg function"
-  },
-
-  "set timeout": {
-    "prefix": "setTimeout",
-    "body": "::gui_scene.setTimeout(${1:0.1}, ${2:action})",
-    "description": "set Timeout"
-  },
-
-  "reset timeout": {
-    "prefix": "setTimeout",
-    "body": "::gui_scene.resetTimeout(${1:0.1}, ${2:action})",
-    "description": "reset Timeout"
-  },
-
-  "localisation": {
-    "prefix": "loc",
-    "body": "::loc(${0})",
-    "description": "localisation"
-  },
-
-  "rendObj": {
-    "prefix": "rend",
-    "body": "rendObj",
-    "description": "rendObj"
-  },
-
-  "robj_dtext": {
-    "prefix": "rend",
-    "body": "rendObj",
-    "description": "rendObj"
-  },
-
-  "robj_stext": {
-    "prefix": "stext",
-    "body": "ROBJ_STEXT",
-    "description": "ROBJ_STEXT"
-  },
-
-  "robj_box": {
-    "prefix": "box",
-    "body": "ROBJ_BOX",
-    "description": "ROBJ_BOX"
-  },
-
-  "align_center": {
-    "prefix": "ac",
-    "body": "ALIGN_CENTER",
-    "description": "ALIGN_CENTER"
-  },
-
-  "align_bottom": {
-    "prefix": "ab",
-    "body": "ALIGN_BOTTOM",
-    "description": "ALIGN_BOTTOM"
-  },
-
-  "allign_right": {
-    "prefix": "ar",
-    "body": "ALIGN_RIGHT",
-    "description": "ALIGN_RIGHT"
-  },
-
-  "allign_left": {
-    "prefix": "al",
-    "body": "ALIGN_LEFT",
-    "description": "ALIGN_LEFT"
-  },
-
-  "skipDirPadNav": {
-    "prefix": "skip",
-    "body": "skipDirPadNav",
-    "description": "skipDirPadNav"
-  },
-
-  "flow_vertical": {
-    "prefix": "vertical",
-    "body": "FLOW_VERTICAL",
-    "description": "FLOW_VERTICAL"
-  },
-
-  "flow_horizontal": {
-    "prefix": "horizont",
-    "body": "FLOW_HORIZONTAL",
-    "description": "FLOW_HORIZONTAL"
-  },
-
-  "children": {
-    "prefix": "ch",
-    "body": "children",
-    "description": "children"
-  },
-
-  "behavior": {
-    "prefix": "bh",
-    "body": "behavior",
-    "description": "behavior"
-  },
-
-  "behavior_button": {
-    "prefix": "button",
-    "body": "Behaviors.Button",
-    "description": "Behaviors.Button"
-  },
-
-  "behavior_textarea": {
-    "prefix": "textarea",
-    "body": "Behaviors.TextArea",
-    "description": "Behaviors.TextArea"
-  },
-
-  "__update": {
-    "prefix": ".__u",
-    "body": ".__update(${0})",
-    "description": "__update"
-  },
-
-  "__merge": {
-    "prefix": ".__m",
-    "body": ".__merge(${0})",
-    "description": "__merge"
-  },
-
-  "stateFlag": {
-    "prefix": "sf",
-    "body": "stateFlag",
-    "description": "stateFlag"
-  },
-
-  "vplace": {
-    "prefix": "vp",
-    "body": "vplace = ${0}",
-    "description": "vplace"
-  },
-
-  "valign": {
-    "prefix": "va",
-    "body": "valign = ${0}",
-    "description": "valign"
-  },
-
-  "hplace": {
-    "prefix": "hp",
-    "body": "hplace = ${0}",
-    "description": "vplace"
-  },
-
-  "halign": {
-    "prefix": "ha",
-    "body": "halign = ${0}",
-    "description": "halign"
-  },
-
-  "fillColor": {
-    "prefix": "fc",
-    "body": "fillColor = ${0}",
-    "description": "fillColor"
+  "Warning": {
+    "prefix": "warning",
+    "body": "Warning(\"${0}\")",
+    "description": "Print warning"
   }
 }
